@@ -25,12 +25,13 @@ The harness opened the real production-export pages and exercised their actual i
 
 Verified all six conversion pairs: MIME, file signature, extension, nonempty output, dimensions; alpha for PNG/WebP; white and custom green flattening for JPEG; 90-degree EXIF orientation; HTMLCanvas fallback; isolated corrupt/unsupported/animated failures; 30-file and 25 MiB guards; cancellation and stale-response suppression; settings invalidation; duplicate names; stored ZIP member extraction with JPEG header checks; source mismatch; unsupported WebP fallback rejection and successful retry; canonical URLs, unique metadata, visible JSON-LD and 10 sitemap entries; no horizontal overflow at iframe widths 360/390/768/1024/1440; theme switching. Observed converter network requests were ordinary GET asset/prefetch requests, with no conversion upload requests. Source contains no upload endpoint or conversion fetch/API call.
 
-## Two visual refinement passes
+## Three visual refinement passes
 
 1. Inspected the initial desktop and mobile layouts. Found heavy fallback typography, low workspace positioning, a clipped mobile output selector and small supporting labels. Bundled a local variable Inter font, restrained heading weight/size, moved the workspace upward, widened the mobile destination selector and improved label readability. See baseline and pass1 screenshots.
 2. Inspected dark tablet success and mobile partial failure. Found excessive separation between Add images and the queue, repeated output labels on failed rows and a raw DataView error. Moved secondary actions into the queue header, refined the slider track, added visible download affordances, aligned thumbnail/result rows, removed redundant failed-row targets and introduced plain-language corrupt-file recovery. A final contrast correction keeps white primary-action text on #2563EB in both themes (approximately 5.17:1).
+3. Reopened the production export in the browser and found the empty-state output-format instruction detached from its selector on desktop. Changed the settings area to a clear two-column layout at wide widths and a single stacked column at tablet widths. In the actual desktop capture, the instruction now starts immediately beside the selector group, shortening the visual gap. This refinement did not change mobile CSS or conversion behavior.
 
-Final screenshots were inspected after these edits. Desktop selected-file view, desktop empty view, dark mobile success and light tablet partial-failure screenshots are retained under `screenshots/`. These are actual rendered browser screenshots, cropped to remove the test harness's surrounding whitespace. No product mockup or generated UI image was substituted.
+Final screenshots were inspected after these edits. Desktop selected-file view, desktop empty view, dark mobile success, light tablet partial-failure and the new pass-3 desktop empty view are retained under `screenshots/`. The new pass-3 image is an actual production-export browser capture. Earlier responsive images are actual rendered browser captures, cropped to remove the test harness's surrounding whitespace. No product mockup or generated UI image was substituted.
 
 ## Browser environment limits
 
@@ -40,7 +41,9 @@ Processing was verified in live browser accessibility state: two active rows, qu
 
 Actual ZIP bytes and members were checked through a test-only interception of the generated download anchor. A subsequent native cloud download-event observation timed out; a saved native download file was not verified. The standalone Playwright suite includes genuine OS download checks for a normal development host. Native picker selection was exercised but end-to-end picker/download behavior should be retested outside this cloud environment.
 
-Keyboard Enter activation of the theme control was observed. Full keyboard-only traversal, a screen-reader session, OS reduced-motion preference behavior, Lighthouse/Core Web Vitals, low-memory real devices, Firefox and Safari/WebKit remain unverified. Reduced-motion CSS and focus styles are implemented. This is not a full WCAG conformance certification.
+Keyboard Enter activation of the theme control was observed in the original cloud harness. In this follow-up, direct cloud-browser click actions focused the theme control without visibly activating it; the separate harness page opened blank, so neither interaction was counted as newly verified. Full keyboard-only traversal, a screen-reader session, OS reduced-motion preference behavior, Lighthouse/Core Web Vitals, low-memory real devices, Firefox and Safari/WebKit remain unverified. Reduced-motion CSS and focus styles are implemented. This is not a full WCAG conformance certification.
+
+The repository Playwright suite was attempted again with the available Chromium project. All eight cases stopped before test execution because the Playwright Chromium headless-shell binary was absent from the environment. The earlier 18-case cloud browser run remains the functional browser evidence; this follow-up did not replace it.
 
 ## Release configuration
 

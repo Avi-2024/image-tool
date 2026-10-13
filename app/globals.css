@@ -28,3 +28,16 @@ input[type=range]::-moz-range-thumb{width:11px;height:11px;border-radius:50%;bac
 @media(max-width:600px){.queue-heading{min-height:58px;gap:6px}.queue-tools{gap:2px}.queue-heading .queue-summary{display:none}.queue-tools .text-button{font-size:12px;padding:8px 6px}.queue-tools .add-button{gap:4px}.queue-section{padding-bottom:6px}.file-row{min-height:112px;padding:16px 0;row-gap:4px}.file-preview{margin-top:2px}.file-result.empty-result{display:none}.file-row.status-failed .file-status{grid-row:2}.file-actions{gap:4px}.file-error{font-size:13px;line-height:1.55}.workspace-footer{padding:16px}.workspace-feedback{line-height:1.5}.file-status{font-size:12px}.background-control{min-width:116px}.settings-extra:has(.background-control){gap:16px}.control-note{line-height:1.5}.hero h1{font-weight:550}.hero p{line-height:1.65}}
 /* Keep white action text above AA contrast in both themes. */
 :root{--action:#2563eb}.primary{background:var(--action)}
+
+/* Visual refinement 3: keep output guidance in the same visual group as format selection. */
+@media(min-width:901px){
+ .settings{display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);justify-content:initial;gap:44px}
+ .format-controls{min-width:0}
+ .settings-extra{width:auto;min-width:0;justify-content:flex-start}
+ .quality-note{align-self:center}
+}
+@media(min-width:601px) and (max-width:900px){
+ .settings{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+ .settings-extra{width:100%;min-height:0;justify-content:flex-start}
+ .quality-note{align-self:center}
+}
