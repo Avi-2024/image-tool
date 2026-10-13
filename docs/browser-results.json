@@ -4,7 +4,7 @@
   "failed": 0,
   "tests": [
     {
-      "name": "png \u2192 jpg",
+      "name": "png → jpg",
       "pass": true,
       "detail": {
         "type": "image/jpeg",
@@ -33,7 +33,7 @@
       }
     },
     {
-      "name": "jpg \u2192 png",
+      "name": "jpg → png",
       "pass": true,
       "detail": {
         "type": "image/png",
@@ -62,7 +62,7 @@
       }
     },
     {
-      "name": "jpg \u2192 webp",
+      "name": "jpg → webp",
       "pass": true,
       "detail": {
         "type": "image/webp",
@@ -91,7 +91,7 @@
       }
     },
     {
-      "name": "webp \u2192 jpg",
+      "name": "webp → jpg",
       "pass": true,
       "detail": {
         "type": "image/jpeg",
@@ -120,7 +120,7 @@
       }
     },
     {
-      "name": "webp \u2192 png",
+      "name": "webp → png",
       "pass": true,
       "detail": {
         "type": "image/png",
@@ -149,7 +149,7 @@
       }
     },
     {
-      "name": "png \u2192 webp",
+      "name": "png → webp",
       "pass": true,
       "detail": {
         "type": "image/webp",

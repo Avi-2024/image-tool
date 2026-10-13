@@ -1,5 +1,49 @@
 # Verification — 2026-10-13
 
+## Latest UI upgrade
+
+The existing implementation was improved directly. Conversion engines, worker scheduling, safety limits and canonical routes were retained. The new presentation uses a clearer image-conversion headline, a blue secondary line, a horizontal desktop upload workspace with original CSS file sheets, a visibly distinct output selector, labelled desktop download actions, readable ready indicators and a compact mobile layout. The entire empty upload surface is now one native button. A file chosen before its output format receives an explicit instruction rather than an unexplained disabled action.
+
+The ten visual/UX defects addressed in this upgrade were:
+
+1. The hero did not name the image-conversion task clearly.
+2. The desktop upload zone spread its contents through a large empty centered area.
+3. The zone appeared clickable while only its inner button opened the picker.
+4. Source and destination controls had equal visual emphasis.
+5. A chosen image without an output format received no specific conversion instruction.
+6. Long mobile upload copy pushed the primary button toward the viewport edge.
+7. Desktop downloads used icon-only controls.
+8. Dark download text blended into its blue background.
+9. The tablet quality slider remained narrow despite the available space.
+10. The theme button's 40px target fell below the preferred 44px size.
+
+Two new rendered review-and-improve passes were completed:
+
+1. Inspected the real desktop upload workspace, a 390px mobile empty state, a 768px dark success state and a mobile partial failure. The first pass exposed a mobile upload button positioned too low and low-contrast dark download labels.
+2. Shortened the upload title and mobile spacing, widened the tablet quality slider and brightened the dark labels. Re-inspected desktop empty/selected/success, mobile empty/selected/dark success and tablet partial failure after the corrections. The mobile upload button moved upward by approximately 55px in the observed capture. Contrast calculations: primary white text 5.17:1, dark download text 7.11:1, dark output label 9.48:1, dark hero accent 7.41:1.
+
+Final commands: `npm run lint` passed; `npm run typecheck` passed; `npm run test` passed all 25 tests; `npm run build` passed from a clean generated cache. An intermediate build hit a truncated generated pages manifest, resolved by rebuilding with a fresh `.next` directory. `npm run test:e2e -- --project=chromium --grep 'mobile overflow'` stopped before page execution because the Chromium headless-shell binary is absent.
+
+The cloud Chromium suite was rerun against the actual final static export: **18 passed, 0 failed**, recorded in `browser-results.json`. It covers real bytes for six conversion pairs, alpha/background/orientation, fallback, corrupt/animated rejection, cancellation, output invalidation, duplicate ZIP names and extracted member bytes, SEO/schema and overflow at 360/390/768/1024/1440 CSS pixels. No image upload request was observed by the harness instrumentation. Separately, the native file chooser opened from the new upload surface, accepted a real fixture and completed WebP conversion through the visible controls. Keyboard Enter changed the theme successfully.
+
+Screenshots inspected and retained:
+
+| Screenshot in `screenshots/` | Actual state |
+| --- | --- |
+| `pixelconvert-redesign-pass1-mobile.jpg` | First-pass mobile empty state |
+| `pixelconvert-redesign-pass1-tablet.jpg` | First-pass dark tablet success |
+| `pixelconvert-redesign-final-desktop.jpg` | Final light desktop empty workspace |
+| `pixelconvert-redesign-final-desktop-selected.jpg` | Final desktop queued fixtures |
+| `pixelconvert-redesign-final-desktop-success.jpg` | Final desktop real results and download controls |
+| `pixelconvert-redesign-final-mobile-empty.jpg` | Final mobile empty workspace |
+| `pixelconvert-redesign-final-mobile-selected.jpg` | Native-picker selection with missing-format guidance |
+| `pixelconvert-redesign-final-mobile-dark-success.jpg` | Final dark mobile real results and ZIP action |
+| `pixelconvert-redesign-final-tablet-error.jpg` | Final tablet successful file plus damaged PNG |
+
+Responsive browser inspection used same-origin iframe viewports of 1440×900, 768×1024 and 390×844 CSS pixels. The cloud browser's native capture scales/clips those regions; retained crops remove only the surrounding QA page. The complete desktop converter is visible, while the tablet capture contains the native viewport's visible height. These are real browser renders, not physical-device emulation. Full-page capture timed out. Active processing was observed in the live accessibility tree with disabled settings, genuine processed counts and Cancel; its immediate screenshot returned the earlier queued frame, so no screenshot is labelled as active processing.
+
+The temporary preview command was restored and test-only assets were moved outside the final static output. Current mobile/tablet verification supersedes the blank-harness limitation recorded in the earlier pass below. Native saved-download completion, Safari/Firefox, physical devices, a full screen-reader audit, OS reduced-motion emulation and measured Core Web Vitals remain unverified. The production domain and contact address still require configuration before deployment.
+
 ## Scope and provenance
 
 The repository was empty. The user subsequently authorized pushing the supplied docs and building from the brief. No existing application code was replaced. The documentation was pushed first; the implementation is a separate commit.

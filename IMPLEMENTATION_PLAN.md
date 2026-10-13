@@ -15,3 +15,11 @@ No prior implementation existed in the supplied repository. The user authorized 
 - Baseline inspection and two source refinement passes completed in cloud Chromium.
 - 25 unit/component tests and 18 real browser checks passed.
 - Local browser execution, WebKit dependencies, native cloud download completion and production origin remain explicit limits; see docs/VERIFICATION.md.
+
+## Current visual upgrade
+
+1. Strengthen the hero typography, upload affordance, output-format emphasis and result actions while retaining the existing conversion engine.
+2. Inspect the first rendered pass at desktop, tablet and mobile widths, including light/dark and real selected/success/error states; refine defects in a second source pass.
+3. Re-run the required checks, record new visual evidence and exact browser limits, and push the reviewed changes to main.
+
+Completed: both new browser refinement passes, native picker and keyboard theme activation, 25 unit/component tests, 18 final cloud browser checks, lint, typecheck and a clean static export. Exact screenshot provenance and browser limitations are recorded in `docs/VERIFICATION.md`.
