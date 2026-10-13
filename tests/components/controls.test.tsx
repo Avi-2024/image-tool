@@ -1,0 +1,11 @@
+import React from 'react';
+import {it,expect,vi,afterEach} from 'vitest';
+import {render,screen,fireEvent,cleanup} from '@testing-library/react';
+import ConversionSettings from '@/components/converter/ConversionSettings';
+import Dropzone from '@/components/converter/Dropzone';
+afterEach(cleanup);
+const props={from:'png' as const,to:'jpg' as const,quality:.9,background:'#ffffff',locked:false,disabled:false,webp:true,alpha:true,setFrom:vi.fn(),setTo:vi.fn(),setQuality:vi.fn(),setBackground:vi.fn()};
+it('shows relevant transparency controls and sends actual settings changes',()=>{render(<ConversionSettings {...props}/>);fireEvent.change(screen.getByLabelText('Output quality'),{target:{value:'70'}});expect(props.setQuality).toHaveBeenCalledWith(.7);expect(screen.getByLabelText('JPEG background color')).toBeVisible();});
+it('does not show lossy controls for PNG output',()=>{render(<ConversionSettings {...props} to="png"/>);expect(screen.queryByLabelText('Output quality')).toBeNull();expect(screen.queryByLabelText('JPEG background color')).toBeNull();});
+it('locks route formats and settings while processing',()=>{render(<ConversionSettings {...props} locked disabled/>);for(const select of screen.getAllByRole('combobox'))expect(select).toBeDisabled();expect(screen.getByLabelText('Output quality')).toBeDisabled();});
+it('offers a native accessible upload button and file input',()=>{render(<Dropzone from="any" compact={false} disabled={false} onAdd={vi.fn()}/>);expect(screen.getByRole('button',{name:'Choose images'})).toBeVisible();expect(screen.getByLabelText('Choose images')).toHaveAttribute('multiple');});

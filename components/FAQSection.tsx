@@ -1,0 +1,2 @@
+import { Plus } from 'lucide-react';
+export default function FAQSection({faqs}:{faqs:{question:string;answer:string}[]}){return <section className="faq-section section"><div className="section-heading"><span className="eyebrow">GOOD TO KNOW</span><h2>A few useful answers.</h2></div><div className="faq-list">{faqs.map(f=><details key={f.question}><summary>{f.question}<Plus size={18} aria-hidden="true"/></summary><p>{f.answer}</p></details>)}</div></section>;}

@@ -1,0 +1,306 @@
+{
+  "complete": true,
+  "passed": 18,
+  "failed": 0,
+  "tests": [
+    {
+      "name": "png \u2192 jpg",
+      "pass": true,
+      "detail": {
+        "type": "image/jpeg",
+        "bytes": [
+          255,
+          216,
+          255,
+          224,
+          0,
+          16,
+          74,
+          70,
+          73,
+          70,
+          0,
+          1
+        ],
+        "width": 16,
+        "height": 10,
+        "pixel": [
+          249,
+          253,
+          252,
+          255
+        ]
+      }
+    },
+    {
+      "name": "jpg \u2192 png",
+      "pass": true,
+      "detail": {
+        "type": "image/png",
+        "bytes": [
+          137,
+          80,
+          78,
+          71,
+          13,
+          10,
+          26,
+          10,
+          0,
+          0,
+          0,
+          13
+        ],
+        "width": 16,
+        "height": 10,
+        "pixel": [
+          35,
+          94,
+          210,
+          255
+        ]
+      }
+    },
+    {
+      "name": "jpg \u2192 webp",
+      "pass": true,
+      "detail": {
+        "type": "image/webp",
+        "bytes": [
+          82,
+          73,
+          70,
+          70,
+          32,
+          2,
+          0,
+          0,
+          87,
+          69,
+          66,
+          80
+        ],
+        "width": 16,
+        "height": 10,
+        "pixel": [
+          35,
+          94,
+          211,
+          255
+        ]
+      }
+    },
+    {
+      "name": "webp \u2192 jpg",
+      "pass": true,
+      "detail": {
+        "type": "image/jpeg",
+        "bytes": [
+          255,
+          216,
+          255,
+          224,
+          0,
+          16,
+          74,
+          70,
+          73,
+          70,
+          0,
+          1
+        ],
+        "width": 16,
+        "height": 10,
+        "pixel": [
+          249,
+          253,
+          252,
+          255
+        ]
+      }
+    },
+    {
+      "name": "webp \u2192 png",
+      "pass": true,
+      "detail": {
+        "type": "image/png",
+        "bytes": [
+          137,
+          80,
+          78,
+          71,
+          13,
+          10,
+          26,
+          10,
+          0,
+          0,
+          0,
+          13
+        ],
+        "width": 16,
+        "height": 10,
+        "pixel": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "png \u2192 webp",
+      "pass": true,
+      "detail": {
+        "type": "image/webp",
+        "bytes": [
+          82,
+          73,
+          70,
+          70,
+          102,
+          2,
+          0,
+          0,
+          87,
+          69,
+          66,
+          80
+        ],
+        "width": 16,
+        "height": 10,
+        "pixel": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "name": "custom background flattening",
+      "pass": true,
+      "detail": [
+        1,
+        254,
+        6,
+        255
+      ]
+    },
+    {
+      "name": "JPEG EXIF orientation",
+      "pass": true,
+      "detail": {
+        "width": 10,
+        "height": 20
+      }
+    },
+    {
+      "name": "canvas fallback produces valid output",
+      "pass": true,
+      "detail": {
+        "type": "image/jpeg",
+        "bytes": [
+          255,
+          216,
+          255,
+          224,
+          0,
+          16,
+          74,
+          70,
+          73,
+          70,
+          0,
+          1
+        ],
+        "width": 16,
+        "height": 10,
+        "pixel": [
+          249,
+          253,
+          252,
+          255
+        ]
+      }
+    },
+    {
+      "name": "partial failure and animated rejection",
+      "pass": true,
+      "detail": {
+        "completed": 1,
+        "failed": 3
+      }
+    },
+    {
+      "name": "settings invalidate stale results",
+      "pass": true,
+      "detail": "Old output removed"
+    },
+    {
+      "name": "30-file and 25MB safety limits",
+      "pass": true,
+      "detail": "31st file excluded; oversized file rejected"
+    },
+    {
+      "name": "cancellation stops active queue and ignores stale output",
+      "pass": true,
+      "detail": {
+        "cancelled": 8
+      }
+    },
+    {
+      "name": "duplicate filenames and actual ZIP bytes",
+      "pass": true,
+      "detail": {
+        "name": "converted-images.zip",
+        "type": "application/zip",
+        "entries": [
+          "alpha.jpg",
+          "alpha-1.jpg"
+        ]
+      }
+    },
+    {
+      "name": "route source mismatch is actionable",
+      "pass": true,
+      "detail": "Wrong source rejected"
+    },
+    {
+      "name": "encoder fallback cannot masquerade as WebP and retry works",
+      "pass": true,
+      "detail": "PNG fallback rejected; real WebP after retry"
+    },
+    {
+      "name": "all six canonical pages, sitemap and schema",
+      "pass": true,
+      "detail": "Nine unique pages; 10 sitemap URLs; valid JSON-LD"
+    },
+    {
+      "name": "responsive widths and theme",
+      "pass": true,
+      "detail": [
+        {
+          "width": 360,
+          "scrollWidth": 345
+        },
+        {
+          "width": 390,
+          "scrollWidth": 375
+        },
+        {
+          "width": 768,
+          "scrollWidth": 753
+        },
+        {
+          "width": 1024,
+          "scrollWidth": 1009
+        },
+        {
+          "width": 1440,
+          "scrollWidth": 1425
+        }
+      ]
+    }
+  ]
+}

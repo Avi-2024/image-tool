@@ -1,0 +1,18 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+import {unzipSync} from 'fflate';
+const cases=[['png','jpg','alpha.png'],['jpg','png','photo.jpg'],['jpg','webp','photo.jpg'],['webp','jpg','alpha.webp'],['webp','png','alpha.webp'],['png','webp','alpha.png']];
+for(const [from,to,fixture]of cases)test(`${from} to ${to}: real downloadable bytes`,async({page})=>{
+ const requests:string[]=[];page.on('request',request=>{if(request.method()!=='GET')requests.push(request.url());});
+ await page.goto(`/${from}-to-${to}/`);await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');
+ await page.locator('#image-input').setInputFiles(`tests/fixtures/${fixture}`);await expect(page.locator('.file-row')).toHaveCount(1);await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveText('Ready');
+ const event=page.waitForEvent('download');await page.getByRole('button',{name:new RegExp(`^Download .*\\.${to}$`)}).click();const download=await event,path=await download.path();expect(download.suggestedFilename()).toMatch(new RegExp(`\\.${to}$`));const bytes=readFileSync(path!);
+ if(to==='jpg')expect([...bytes.subarray(0,3)]).toEqual([255,216,255]);else if(to==='png')expect([...bytes.subarray(0,8)]).toEqual([137,80,78,71,13,10,26,10]);else{expect(bytes.subarray(0,4).toString()).toBe('RIFF');expect(bytes.subarray(8,12).toString()).toBe('WEBP');}
+ expect(requests).toEqual([]);
+});
+test('batch ZIP preserves colliding filenames and isolates corrupt input',async({page})=>{
+ await page.goto('/png-to-jpg/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');await page.locator('#image-input').setInputFiles(['tests/fixtures/alpha.png','tests/fixtures/alpha.png','tests/fixtures/corrupt.png']);await expect(page.locator('.file-row')).toHaveCount(3);await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveCount(2);await expect(page.locator('.file-status.failed')).toHaveCount(1);const event=page.waitForEvent('download');await page.getByRole('button',{name:'Download all · ZIP'}).click();const path=await(await event).path(),contents=unzipSync(readFileSync(path!));expect(Object.keys(contents)).toEqual(['alpha.jpg','alpha-1.jpg']);for(const bytes of Object.values(contents))expect([...bytes.subarray(0,3)]).toEqual([255,216,255]);
+});
+test('mobile overflow, keyboard focus, dark mode and invalidated output',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to content'})).toBeFocused();await page.getByRole('button',{name:'Toggle color theme'}).click();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');await page.getByRole('combobox',{name:'Convert to'}).selectOption('jpg');await page.locator('#image-input').setInputFiles('tests/fixtures/alpha.png');await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveCount(1);await page.getByRole('combobox',{name:'Convert to'}).selectOption('png');await expect(page.locator('.file-status.completed')).toHaveCount(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});

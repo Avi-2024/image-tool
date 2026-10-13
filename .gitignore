@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+.env*.local
+playwright-report/
+test-results/
+*.tsbuildinfo
+.openai/
+public/__qa/
+tests/fixtures/large.jpg
