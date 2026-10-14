@@ -3,7 +3,7 @@ import {readFileSync} from 'node:fs';
 import {unzipSync} from 'fflate';
 const cases=[['png','jpg','alpha.png'],['jpg','png','photo.jpg'],['jpg','webp','photo.jpg'],['webp','jpg','alpha.webp'],['webp','png','alpha.webp'],['png','webp','alpha.png']];
 for(const [from,to,fixture]of cases)test(`${from} to ${to}: real downloadable bytes`,async({page})=>{
- const requests:string[]=[];page.on('request',request=>{if(request.method()!=='GET')requests.push(request.url());});
+ const requests:string[]=[];page.on('request',request=>{if(!['GET','HEAD'].includes(request.method())||request.postDataBuffer()!==null)requests.push(request.url());});
  await page.goto(`/${from}-to-${to}/`);await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');
  await page.locator('#image-input').setInputFiles(`tests/fixtures/${fixture}`);await expect(page.locator('.file-row')).toHaveCount(1);await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveText('Ready');
  const event=page.waitForEvent('download');await page.getByRole('button',{name:new RegExp(`^Download .*\\.${to}$`)}).click();const download=await event,path=await download.path();expect(download.suggestedFilename()).toMatch(new RegExp(`\\.${to}$`));const bytes=readFileSync(path!);

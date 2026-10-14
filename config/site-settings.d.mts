@@ -1,0 +1,1 @@
+export function resolveSiteSettings(input?: {url?: string; indexing?: string; contactEmail?: string; googleVerification?: string}): {url: string; indexable: boolean; contactEmail: string; googleVerification: string};

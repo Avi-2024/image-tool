@@ -78,3 +78,27 @@ Rebuild after changing public environment values. Upload `out/` to a static host
 ## Verification evidence
 
 See `docs/VERIFICATION.md` and `docs/screenshots/`. The managed environment blocked native Chromium launching and lacked WebKit system libraries. Cloud Chromium was used for real conversion tests and screenshots. Responsive screenshots use same-origin iframe viewports rather than physical mobile/tablet devices. Safari, real-device performance, OS-level reduced-motion behavior and production domain configuration remain unverified. No ranking, ad approval or revenue guarantee is made.
+
+## Production release and search indexing
+
+Use `npm run build:release` for a **public** release. It stops if the HTTPS origin, indexing opt-in or contact email is missing, or if QA assets would ship. `npm run build` remains available for development previews, which default to `noindex, follow`.
+
+1. Choose the real production domain/subdomain. Set `NEXT_PUBLIC_SITE_URL` to its root HTTPS origin without a path, query, fragment or credentials.
+2. Set `NEXT_PUBLIC_CONTACT_EMAIL` to your actual support address and `NEXT_PUBLIC_ALLOW_INDEXING=true` only on production. Use `false` on staging/previews.
+3. Optionally set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to Search Console's HTML verification token, or use DNS verification independently. This token is public; it is not an API key.
+4. Run lint, typecheck, unit tests, `npm run build:release` and browser tests. Public environment values are baked into static HTML/JavaScript: rebuild after every change.
+5. Deploy only `out/` to your selected static host after approving public launch. Configure HTTPS, directory indexes and a real HTTP 404 for missing paths. Do not use an SPA catch-all returning homepage HTML with status 200. Redirect HTTP and alternate hostnames to the canonical HTTPS host in one hop; preserve paths.
+6. Inspect the deployed homepage and all six tool URLs. They should return 200, have matching canonical URLs and no `noindex`/`X-Robots-Tag: noindex`. Verify `/robots.txt`, `/sitemap.xml`, static JS/worker/font assets, and a deliberately missing URL returning 404.
+7. Verify the domain in Google Search Console, submit `/sitemap.xml`, run live URL inspection and request indexing of the homepage and six conversion pages. Monitor the Page indexing report. Search Console access and a deployed URL are required; local build verification cannot submit or prove indexing.
+
+`npm run check:seo` examines the actual exported HTML: all ten pages, unique titles/descriptions, canonicals, social previews, visible FAQ schemas, internal links/fragments, robots, the 404 page, and absence of test assets. `-- --release` also requires indexable pages and the canonical sitemap reference. It checks the exported files, not the host's HTTP headers, redirects or availability.
+
+### Host configuration and performance
+
+Serve fingerprinted `/_next/static/` assets with `Cache-Control: public, max-age=31536000, immutable`; revalidate HTML, robots and sitemap so releases do not leave stale metadata. Enable Brotli/gzip where supported. Set `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and disable unused camera/microphone/geolocation through Permissions-Policy. Validate any Content-Security-Policy with Next's inline hydration/theme scripts and module workers before enforcing it; a blind restrictive policy can break conversion. Confirm real downloads on Safari and physical mobile devices and measure Core Web Vitals on the final host.
+
+### Advertising launch
+
+Reserved ad components remain below the converter and keep a stable footprint when enabled. The flag only shows an honest placeholder; it does not activate an ad network. Before integrating a network, update privacy disclosures, handle applicable consent, keep ads clearly separated from upload/download actions and verify mobile layout shifts. Add `ads.txt` only with the real publisher information supplied by the chosen network. No approval, ranking or revenue is guaranteed.
+
+Google references: [technical requirements](https://developers.google.com/search/docs/essentials/technical), [sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls).

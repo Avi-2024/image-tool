@@ -1,3 +1,39 @@
+# Production and SEO hardening — 14 October 2026
+
+Status: implementation verified for the tested Chromium environment; public launch remains blocked until the owner chooses the domain and contact address. No public deployment or ad activation was performed.
+
+## Changes
+
+- Added shared, validated root-origin configuration. Preview builds default to `noindex, follow`; production requires an explicit indexing flag and a real HTTPS origin. Invalid paths, credentials, query strings, local/example origins and mistyped flags are rejected.
+- Added complete route-specific Open Graph and Twitter metadata, a local 1200×630 social image, and optional Search Console verification-token support. Preserved unique titles, descriptions, canonical routes, server-rendered content, sitemap and structured data.
+- Added release preflight and actual exported-HTML SEO auditing, including all ten intended pages, internal links/fragments, visible FAQ schema, social metadata, noindex on 404s and prevention of accidental QA publication.
+- Updated fflate 0.8.2 to 0.8.3 after the production dependency audit flagged GHSA-px8p-9vwx-vf98. The app creates ZIPs and does not accept ZIP uploads; nevertheless the patched version is now pinned in the lockfile.
+- Improved network diagnostics in the browser harness. Initial tests incorrectly classified bodyless HEAD requests as uploads. Diagnostics showed a HEAD request to the preview root with no body; checks now allow bodyless GET/HEAD and still reject upload-capable methods/bodies. Final results include the captured request metadata.
+- Preserved conversion code, interface, privacy model and disabled ad placements. README now covers host headers, cache behavior, real 404s, domain redirects, Search Console and advertising launch requirements.
+
+## Verified
+
+- `npm run lint`: passed.
+- `npm run typecheck`: passed.
+- `npm run test`: 38 passed (21 converter/helper, 13 release configuration, 4 component).
+- `npm audit --omit=dev`: zero known vulnerabilities after the update. This is a dependency audit, not a comprehensive security guarantee.
+- Production static compilation completed, 14 generated route outputs / 10 public HTML pages.
+- `npm run check:seo`: passed, 10 unique canonical pages and 123 resolving internal links, plus social metadata, FAQ schemas, robots, 404 and no test assets.
+- Positive public-indexing export checked with temporary, synthetic build-only origin `https://pixelconvert.release-check.net` and test contact address. This is not the user's domain and was not deployed. `check:seo -- --release` passed. Then rebuilt with default preview settings; final output is noindex/local development origin.
+- Negative release guards worked: missing real production configuration rejected; a leftover `out/__qa` directory also caused the export audit to fail rather than ship test fixtures. QA assets were removed and both audits passed; preflight now checks source AND exported QA directories.
+- Final cloud Chromium suite: **18 passed, 0 failed**, after the ZIP-library update, using real files and codecs. Covers six conversion directions with signature/MIME/dimensions, alpha and background flattening, EXIF orientation, canvas fallback, partial failures, stale-output invalidation, limits, cancellation, retry, ZIP member bytes/names, metadata and responsive widths 360/390/768/1024/1440. Exact results: `docs/browser-results.json`.
+- Final real completed-download UI screenshot inspected: `docs/screenshots/pixelconvert-seo-final-success.jpg`. It shows the actual two-file WebP results, including both smaller and larger output sizes. Native cloud viewport capture of a desktop-width iframe, scrolled to the converter; not physical-device emulation. Original earlier two-pass visual evidence remains below.
+
+## Not verified / launch requirements
+
+- Native CLI Playwright smoke test attempted and failed before page execution because the Chromium headless-shell executable is absent. Cloud browser tests above are independent evidence; do not claim native Playwright passed.
+- Native saved-file completion, Safari/WebKit, Firefox, physical mobile devices, full screen-reader audit and measured Lighthouse/real-user Core Web Vitals remain unverified.
+- A direct localhost HTTP probe was unavailable because the managed preview is served through the supervisor; exported-file checks and cloud browser page requests passed. Production host HTTP status codes, redirects, headers, robots accessibility and worker delivery must be checked on the eventual live host.
+- Domain and support email not chosen. Configure those and `NEXT_PUBLIC_ALLOW_INDEXING=true`, run `npm run build:release`, deploy to the approved host, verify Search Console and submit `/sitemap.xml`. No indexing/ranking claim or guarantee is made.
+- Ads remain disabled; actual network integration, publisher configuration, privacy disclosures and applicable consent are separate launch work.
+
+---
+
 # Verification — 2026-10-13
 
 ## Latest UI upgrade

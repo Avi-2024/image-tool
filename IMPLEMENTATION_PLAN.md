@@ -23,3 +23,12 @@ No prior implementation existed in the supplied repository. The user authorized 
 3. Re-run the required checks, record new visual evidence and exact browser limits, and push the reviewed changes to main.
 
 Completed: both new browser refinement passes, native picker and keyboard theme activation, 25 unit/component tests, 18 final cloud browser checks, lint, typecheck and a clean static export. Exact screenshot provenance and browser limitations are recorded in `docs/VERIFICATION.md`.
+
+## Production and SEO hardening
+
+- Centralize origin validation and explicit public indexing; preview builds default to noindex.
+- Complete route-specific Open Graph/Twitter metadata and the bundled social image; support Search Console verification.
+- Add release preflight and an exported-HTML SEO/link audit; retain local conversion and ad placement behavior.
+- Verify lint/types/unit tests, build, SEO and real browser workflows. Record launch requirements and push to main. The user has not chosen a domain, so public launch and live indexing remain pending.
+
+Completed: release safeguards, social metadata/image, Search Console token support, fflate patch, 38 tests, 18 final cloud browser checks, build and 10-page/123-link export audits. Domain-dependent public launch remains pending.
