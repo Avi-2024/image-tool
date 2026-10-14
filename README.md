@@ -53,7 +53,7 @@ Open `/__qa/index.html?w=1440&h=900&theme=light` and click **Run actual browser 
 - `lib/converter/worker.ts` / `engine.ts`: OffscreenCanvas image encoding where available. A worker initialization failure or missing OffscreenCanvas uses an HTMLCanvas fallback. Worker instances are short-lived and terminated after each job, with at most two active jobs; this is bounded scheduling rather than a persistent worker pool.
 - `lib/converter/zip.worker.ts`: ZIP generation off the UI thread using fflate. Files are stored without extra compression because image data is already encoded; colliding names remain unique.
 - `app`: static server-rendered metadata, content, FAQs, JSON-LD, robots and sitemap.
-- `public/fonts`: bundled Inter Latin variable font under the SIL Open Font License. No remote font requests.
+- `public/fonts`: bundled Geist Sans Latin variable font under the SIL Open Font License. No remote font requests.
 
 ## Safety and supported behavior
 

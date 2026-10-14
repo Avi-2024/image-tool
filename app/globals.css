@@ -7,8 +7,8 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}}
 
 /* Visual refinement 1: quieter hierarchy, readable controls, and a higher workspace. */
-@font-face{font-family:Inter;src:url('/fonts/inter-latin.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
-body{font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:-.15px}
+@font-face{font-family:Geist;src:url('/fonts/geist-latin.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+body{font-family:Geist,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:-.15px}
 h1{font-weight:550;font-size:48px;letter-spacing:-1.9px;line-height:1.1}
 .main-shell{padding-top:36px}.hero{margin-bottom:28px}.hero h1{margin:14px 0}.hero h1>span{color:var(--secondary);font-weight:450}
 .workspace-heading{padding:18px 24px}.workspace-format{font-size:11px}.local-label{font-size:13px}
@@ -182,4 +182,35 @@ input[type=range]::-moz-range-thumb{width:11px;height:11px;border-radius:50%;bac
  .dropzone-trigger { gap:16px;padding:22px 16px; }
  .upload-symbol { height:64px; }
  .upload-title { font-size:20px; }
+}
+
+/* Typography polish: a single local variable family and a calmer optical scale. */
+body { letter-spacing:0;font-optical-sizing:auto; }
+h1,h2,h3 { text-wrap:balance; }
+.hero h1 { font-size:46px;line-height:1.12;letter-spacing:-1.7px;font-weight:600; }
+.hero h1>span { font-weight:500; }
+.hero p,.route-hero p { line-height:1.7; }
+.brand { letter-spacing:-.7px;font-weight:650; }
+.header-inner nav { font-weight:500; }
+.workspace-title { font-weight:600;letter-spacing:-.3px; }
+.workspace-format { letter-spacing:1px; }
+.field-label,.control-heading { font-weight:550; }
+.field-label select { font-weight:500; }
+.button { font-weight:550;letter-spacing:.05px; }
+.upload-title { font-weight:600;letter-spacing:-.55px; }
+.upload-description { line-height:1.65; }
+.filename { font-weight:550;letter-spacing:0; }
+.file-meta,.size-difference { letter-spacing:.1px; }
+.section-heading h2 { font-size:28px;font-weight:600;letter-spacing:-.8px; }
+.tool-pair { font-weight:550; }
+.faq-list summary { font-size:15px;line-height:1.5; }
+.converter { box-shadow:0 4px 8px -6px #183d6814,0 20px 48px -34px #183d6838; }
+.workspace-footer { background:var(--surface); }
+[data-theme=dark] .converter { box-shadow:none; }
+@media(max-width:600px) {
+ .hero h1 { font-size:35px;letter-spacing:-1.15px;line-height:1.14; }
+ .hero p { font-size:15px;line-height:1.65; }
+ .section-heading h2 { font-size:25px;letter-spacing:-.6px; }
+ .upload-title { font-size:21px;letter-spacing:-.4px; }
+ .faq-list summary { font-size:14px; }
 }

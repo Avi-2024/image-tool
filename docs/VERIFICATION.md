@@ -130,3 +130,11 @@ The repository Playwright suite was attempted again with the available Chromium 
 The development canonical origin remains `http://localhost:3000`. Set `NEXT_PUBLIC_SITE_URL` to the real HTTPS website origin and `NEXT_PUBLIC_CONTACT_EMAIL` to the actual contact address, then rebuild. Ads default off. Contact honestly explains missing configuration. No public site or hosting account has been provisioned.
 
 The test-only `public/__qa` directory is removed before the final release build. Generate stress fixtures and prepare that directory only for local QA. The release output contains no test fixture or QA harness assets.
+
+## Geist typography refinement — 2026-10-14
+
+Replaced the loaded Inter face with locally hosted Geist Sans (28 KB WOFF2, SIL OFL included), preloaded the font, and refined heading weights, letter spacing, supporting-text line height and the converter shadow. Existing conversion logic and ad placement remain unchanged.
+
+Inspected actual browser captures of the desktop light empty state and mobile dark completed state (`screenshots/geist-desktop.jpg`, `screenshots/geist-mobile.jpg`). Responsive iframe checks passed at 360, 390, 768, 1024 and 1440 pixels. These are embedded viewport checks, not physical-device emulation.
+
+Lint, TypeScript, all 38 unit/component tests, static build and exported SEO checks passed. The actual browser harness rerun passed all 18 checks; see `geist-browser-results.json`. Updated the test-only theme assertion to handle either initial theme, avoiding interference from persisted preferences. Native saved downloads, Safari and physical devices remain unverified as described above.
