@@ -65,7 +65,7 @@ Cancel terminates active workers; a canvas fallback encoding cannot be interrupt
 
 ## Privacy, contact and ads
 
-No image payload leaves the converter. Ordinary page assets and Next.js route prefetch requests still use the network. No analytics or ad-network scripts are included. The browser may store a theme preference in localStorage. Hosting request logs remain the hosting provider's responsibility.
+No image payload leaves the converter or is sent to Google Analytics. Google Analytics (G-82YT27NVJZ) measures page visits and usage; its tag may use cookies and send device, browser, page-view and online identifier data to Google. The browser may store a theme preference in localStorage. Hosting request logs remain the hosting provider's responsibility.
 
 Copy `.env.example` to `.env.local` and configure:
 
