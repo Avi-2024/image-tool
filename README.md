@@ -81,10 +81,10 @@ See `docs/VERIFICATION.md` and `docs/screenshots/`. The managed environment bloc
 
 ## Production release and search indexing
 
-Use `npm run build:release` for a **public** release. It stops if the HTTPS origin, indexing opt-in or contact email is missing, or if QA assets would ship. `npm run build` remains available for development previews, which default to `noindex, follow`.
+Use `npm run build:release` for a **public** release. It stops if the HTTPS origin or indexing opt-in is missing, or if QA assets would ship. If contact email is unset, the contact page shows an honest unconfigured notice instead of a working email form. `npm run build` remains available for development previews, which default to `noindex, follow`.
 
 1. Choose the real production domain/subdomain. Set `NEXT_PUBLIC_SITE_URL` to its root HTTPS origin without a path, query, fragment or credentials.
-2. Set `NEXT_PUBLIC_CONTACT_EMAIL` to your actual support address and `NEXT_PUBLIC_ALLOW_INDEXING=true` only on production. Use `false` on staging/previews.
+2. Set `NEXT_PUBLIC_ALLOW_INDEXING=true` only on production. Use `false` on staging/previews. Set `NEXT_PUBLIC_CONTACT_EMAIL` to a monitored mailbox when available; leaving it unset displays a notice on the Contact page.
 3. Optionally set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` to Search Console's HTML verification token, or use DNS verification independently. This token is public; it is not an API key.
 4. Run lint, typecheck, unit tests, `npm run build:release` and browser tests. Public environment values are baked into static HTML/JavaScript: rebuild after every change.
 5. Deploy only `out/` to your selected static host after approving public launch. Configure HTTPS, directory indexes and a real HTTP 404 for missing paths. Do not use an SPA catch-all returning homepage HTML with status 200. Redirect HTTP and alternate hostnames to the canonical HTTPS host in one hop; preserve paths.
@@ -105,11 +105,11 @@ Google references: [technical requirements](https://developers.google.com/search
 
 ## Vercel release enforcement (October 2026)
 
-The checked-in `vercel.json` selects `npm run build:vercel` and serves the `out/` static export. On `VERCEL_ENV=production`, that command **must** pass `build:release` (origin, indexing, contact email and exported SEO checks). On `VERCEL_ENV=preview` or `development`, it forcibly builds with `NEXT_PUBLIC_ALLOW_INDEXING=false` and no Analytics, even if broadly scoped dashboard settings accidentally enable them. Other/unknown environment values fail closed. Ordinary `npm run build` remains a developer-only preview path.
+The checked-in `vercel.json` selects `npm run build:vercel` and serves the `out/` static export. On `VERCEL_ENV=production`, that command **must** pass `build:release` (origin, indexing and exported SEO checks). On `VERCEL_ENV=preview` or `development`, it forcibly builds with `NEXT_PUBLIC_ALLOW_INDEXING=false` and no Analytics, even if broadly scoped dashboard settings accidentally enable them. Other/unknown environment values fail closed. Ordinary `npm run build` remains a developer-only preview path.
 
 In **Vercel Project → Settings → Environment Variables**, set these only for **Production** (do not commit a real email address unless intentionally public):
 
-- `NEXT_PUBLIC_SITE_URL=https://image-tool-puce.vercel.app` (or the canonical custom HTTPS domain you own).
+- `NEXT_PUBLIC_SITE_URL=https://pixelconvert.nexilolabs.com` (the verified canonical HTTPS hostname).
 - `NEXT_PUBLIC_ALLOW_INDEXING=true`.
 - `NEXT_PUBLIC_CONTACT_EMAIL` to an actual monitored support mailbox.
 - Optional `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-82YT27NVJZ` for opt-in GA4. Without it, analytics stays disabled. A visitor must actively accept analytics before any Google tag downloads. GA4 enhanced measurement should be configured to track SPA history changes; verify in GA DebugView to avoid duplicate page views.
