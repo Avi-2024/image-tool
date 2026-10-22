@@ -27,14 +27,13 @@ jobs:
         run: npm run build:vercel
         env:
           VERCEL_ENV: preview
-          NEXT_PUBLIC_SITE_URL: https://image-tool-puce.vercel.app
+          NEXT_PUBLIC_SITE_URL: https://pixelconvert.nexilolabs.com
           NEXT_PUBLIC_ALLOW_INDEXING: 'true'
           NEXT_PUBLIC_GA_MEASUREMENT_ID: G-82YT27NVJZ
-      - name: Production release smoke test (synthetic CI contact, never deployed)
+      - name: Production release smoke test (canonical sitemap without contact email)
         run: npm run build:vercel
         env:
           VERCEL_ENV: production
-          NEXT_PUBLIC_SITE_URL: https://image-tool-puce.vercel.app
+          NEXT_PUBLIC_SITE_URL: https://pixelconvert.nexilolabs.com
           NEXT_PUBLIC_ALLOW_INDEXING: 'true'
-          NEXT_PUBLIC_CONTACT_EMAIL: release-test@example.org
           NEXT_PUBLIC_GA_MEASUREMENT_ID: G-82YT27NVJZ
