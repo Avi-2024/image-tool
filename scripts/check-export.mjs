@@ -12,6 +12,13 @@ const urls = [...sitemap.querySelectorAll('loc')].map(node => new URL(node.textC
 const paths = ['/', '/png-to-jpg/', '/jpg-to-png/', '/webp-to-jpg/', '/webp-to-png/', '/png-to-webp/', '/jpg-to-webp/', '/about/', '/contact/', '/privacy/'];
 assert.deepEqual(urls.map(url => url.pathname).sort(), [...paths].sort(), 'Sitemap must contain exactly the ten public canonical pages');
 const origin = urls[0].origin;
+if (release) {
+  const configuredOrigin = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  assert.ok(configuredOrigin, 'Production sitemap requires NEXT_PUBLIC_SITE_URL');
+  assert.equal(origin, new URL(configuredOrigin).origin, 'Production sitemap must match the configured canonical site origin');
+  assert.equal(new URL(origin).protocol, 'https:', 'Public sitemaps must use HTTPS');
+  assert.ok(!urls.some(url => url.hostname === 'localhost'), 'Production sitemap contains localhost URLs');
+}
 const titles = new Set(), descriptions = new Set();
 let internalLinks = 0;
 for (const url of urls) {
