@@ -13,7 +13,9 @@
     "qa:prepare": "node scripts/prepare-browser-qa.mjs",
     "check:seo": "node scripts/check-export.mjs",
     "release:preflight": "node scripts/release-preflight.mjs",
-    "build:release": "npm run release:preflight && npm run build && npm run check:seo -- --release"
+    "build:release": "npm run release:preflight && npm run build && npm run check:seo -- --release",
+    "build:vercel": "node scripts/build-vercel.mjs",
+    "check:live": "node scripts/check-deployed.mjs"
   },
   "dependencies": {
     "fflate": "0.8.3",

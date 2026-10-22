@@ -1,0 +1,40 @@
+name: Release safety checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Lint, types, tests and static SEO
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test
+      - name: Preview must be noindex, even if it inherits production flags
+        run: npm run build:vercel
+        env:
+          VERCEL_ENV: preview
+          NEXT_PUBLIC_SITE_URL: https://image-tool-puce.vercel.app
+          NEXT_PUBLIC_ALLOW_INDEXING: 'true'
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: G-82YT27NVJZ
+      - name: Production release smoke test (synthetic CI contact, never deployed)
+        run: npm run build:vercel
+        env:
+          VERCEL_ENV: production
+          NEXT_PUBLIC_SITE_URL: https://image-tool-puce.vercel.app
+          NEXT_PUBLIC_ALLOW_INDEXING: 'true'
+          NEXT_PUBLIC_CONTACT_EMAIL: release-test@example.org
+          NEXT_PUBLIC_GA_MEASUREMENT_ID: G-82YT27NVJZ

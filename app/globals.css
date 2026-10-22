@@ -214,3 +214,15 @@ h1,h2,h3 { text-wrap:balance; }
  .upload-title { font-size:21px;letter-spacing:-.4px; }
  .faq-list summary { font-size:14px; }
 }
+
+/* Optional, revocable analytics consent — visible only on production with GA configured. */
+.analytics-settings { border:0;background:transparent;color:var(--secondary);font:inherit;font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px; }
+.analytics-settings:hover { color:var(--accent); }
+.analytics-settings:focus-visible,.analytics-consent button:focus-visible { outline:3px solid var(--accent);outline-offset:3px; }
+.analytics-consent { position:fixed;z-index:90;bottom:16px;left:16px;right:16px;max-width:860px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:18px 20px;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:14px;box-shadow:0 8px 36px #0002; }
+.analytics-consent strong { font-size:15px;font-weight:650; }
+.analytics-consent p { margin:7px 0 0;color:var(--secondary);font-size:13px;line-height:1.5;max-width:480px; }
+.analytics-consent-actions { display:flex;flex-shrink:0;gap:9px;align-items:center; }
+.analytics-consent-actions button { padding:10px 14px;min-height:44px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap; }
+.analytics-consent-actions .primary { background:var(--accent);border-color:var(--accent);color:white; }
+@media(max-width:700px) { .analytics-consent { flex-direction:column;align-items:stretch;gap:14px;padding:16px; } .analytics-consent-actions { flex-wrap:wrap; } .analytics-consent-actions button { flex:1; } }
