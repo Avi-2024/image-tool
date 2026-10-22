@@ -30,7 +30,7 @@ assert.ok(robots.body.includes(`Sitemap: ${origin}/sitemap.xml`), 'Missing produ
 for (const path of expectedPaths) {
   const {response, body} = await load(path);
   assert.equal(response.status, 200, `${path}: unexpected HTTP status`);
-  assert.ok(!/\\bnoindex\\b/i.test(response.headers.get('x-robots-tag') || ''), `${path}: X-Robots-Tag blocks indexing`);
+  assert.ok(!/\bnoindex\b/i.test(response.headers.get('x-robots-tag') || ''), `${path}: X-Robots-Tag blocks indexing`);
   for (const header of ['x-content-type-options', 'referrer-policy', 'permissions-policy']) {
     assert.ok(response.headers.has(header), `${path}: missing ${header}`);
   }
@@ -38,7 +38,7 @@ for (const path of expectedPaths) {
   const expectedCanonical = new URL(path, origin).href;
   assert.equal(doc.querySelector('link[rel="canonical"]')?.href, expectedCanonical, `${path}: canonical mismatch`);
   const robotsTag = doc.querySelector('meta[name="robots"]')?.content || '';
-  assert.ok(/\\bindex\\b/i.test(robotsTag) && !/\\bnoindex\\b/i.test(robotsTag), `${path}: not indexable`);
+  assert.ok(/\bindex\b/i.test(robotsTag) && !/\bnoindex\b/i.test(robotsTag), `${path}: not indexable`);
   assert.equal(doc.querySelector('meta[property="og:url"]')?.content, expectedCanonical, `${path}: Open Graph origin mismatch`);
   for (const property of ['og:image', 'twitter:image']) {
     const value = doc.querySelector(`meta[property="${property}"], meta[name="${property}"]`)?.content;
