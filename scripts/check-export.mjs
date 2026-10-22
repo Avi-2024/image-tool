@@ -31,9 +31,18 @@ for (const url of urls) {
   const robots = document.querySelector('meta[name="robots"]')?.content;
   assert.ok(robots, 'Robots directive is missing');
   if (release) assert.ok(!robots.includes('noindex') && /\bindex\b/.test(robots), `Not indexable: ${url.pathname}`);
+  if (!release) assert.ok(robots.includes('noindex'), `Preview accidentally indexable: ${url.pathname}`);
+  if (release) {
+    for (const selector of ['meta[property="og:image"]', 'meta[name="twitter:image"]']) {
+      const imageUrl = document.querySelector(selector)?.content;
+      assert.ok(imageUrl, `Missing social image: ${url.pathname}`);
+      assert.equal(new URL(imageUrl, url).origin, origin, `Wrong social image origin: ${url.pathname}`);
+    }
+  }
   for (const script of document.querySelectorAll('script[type="application/ld+json"]')) {
     const data = JSON.parse(script.textContent);
     assert.equal(data['@context'], 'https://schema.org');
+    if (release) assert.ok(!JSON.stringify(data).includes('localhost'), `Localhost structured data: ${url.pathname}`);
     if (data['@type'] === 'FAQPage') for (const question of data.mainEntity) {
       assert.ok(document.body.textContent.includes(question.name));
       assert.ok(document.body.textContent.includes(question.acceptedAnswer.text));

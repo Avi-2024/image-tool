@@ -65,7 +65,7 @@ Cancel terminates active workers; a canvas fallback encoding cannot be interrupt
 
 ## Privacy, contact and ads
 
-No image payload leaves the converter or is sent to Google Analytics. Google Analytics (G-82YT27NVJZ) measures page visits and usage; its tag may use cookies and send device, browser, page-view and online identifier data to Google. The browser may store a theme preference in localStorage. Hosting request logs remain the hosting provider's responsibility.
+No image payload leaves the converter or is sent to Google Analytics. Optional Google Analytics is loaded only on indexable production builds with NEXT_PUBLIC_GA_MEASUREMENT_ID set and after a visitor opts in; a visitor may withdraw consent in Analytics settings. The browser may store a theme preference in localStorage. Hosting request logs remain the hosting provider's responsibility.
 
 Copy `.env.example` to `.env.local` and configure:
 
@@ -102,3 +102,24 @@ Serve fingerprinted `/_next/static/` assets with `Cache-Control: public, max-age
 Reserved ad components remain below the converter and keep a stable footprint when enabled. The flag only shows an honest placeholder; it does not activate an ad network. Before integrating a network, update privacy disclosures, handle applicable consent, keep ads clearly separated from upload/download actions and verify mobile layout shifts. Add `ads.txt` only with the real publisher information supplied by the chosen network. No approval, ranking or revenue is guaranteed.
 
 Google references: [technical requirements](https://developers.google.com/search/docs/essentials/technical), [sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [canonical URLs](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls).
+
+## Vercel release enforcement (October 2026)
+
+The checked-in `vercel.json` selects `npm run build:vercel` and serves the `out/` static export. On `VERCEL_ENV=production`, that command **must** pass `build:release` (origin, indexing, contact email and exported SEO checks). On `VERCEL_ENV=preview` or `development`, it forcibly builds with `NEXT_PUBLIC_ALLOW_INDEXING=false` and no Analytics, even if broadly scoped dashboard settings accidentally enable them. Other/unknown environment values fail closed. Ordinary `npm run build` remains a developer-only preview path.
+
+In **Vercel Project → Settings → Environment Variables**, set these only for **Production** (do not commit a real email address unless intentionally public):
+
+- `NEXT_PUBLIC_SITE_URL=https://image-tool-puce.vercel.app` (or the canonical custom HTTPS domain you own).
+- `NEXT_PUBLIC_ALLOW_INDEXING=true`.
+- `NEXT_PUBLIC_CONTACT_EMAIL` to an actual monitored support mailbox.
+- Optional `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-82YT27NVJZ` for opt-in GA4. Without it, analytics stays disabled. A visitor must actively accept analytics before any Google tag downloads. GA4 enhanced measurement should be configured to track SPA history changes; verify in GA DebugView to avoid duplicate page views.
+
+The repository's GitHub Actions workflow performs lint, typecheck, tests, preview indexing safety and a production build smoke test with a deliberately synthetic **CI-only** contact email. It does not set Vercel environment variables, deploy or guarantee branch protection. Configure the workflow's required check in GitHub branch protection/rulesets after its first successful run.
+
+`vercel.json` adds the host-level `X-Content-Type-Options`, `Referrer-Policy` and `Permissions-Policy` response headers. After merging and redeploying, run:
+
+```sh
+npm run check:live -- https://image-tool-puce.vercel.app
+```
+
+This fails until the live site has real indexable canonicals, a corrected ten-entry sitemap, appropriate headers, public static assets and genuine 404 behavior. It checks deployed HTTP output, not Search Console indexing, GA event receipt or page speed. Once it passes, submit the sitemap in Google Search Console and check the **live** URL Inspection report.
