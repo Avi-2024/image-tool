@@ -226,3 +226,19 @@ h1,h2,h3 { text-wrap:balance; }
 .analytics-consent-actions button { padding:10px 14px;min-height:44px;border:1px solid var(--border);border-radius:9px;background:var(--surface);color:var(--text);font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap; }
 .analytics-consent-actions .primary { background:var(--accent);border-color:var(--accent);color:white; }
 @media(max-width:700px) { .analytics-consent { flex-direction:column;align-items:stretch;gap:14px;padding:16px; } .analytics-consent-actions { flex-wrap:wrap; } .analytics-consent-actions button { flex:1; } }
+
+/* Route-specific, useful format decisions; placed after the converter workspace. */
+.decision-guide .section-heading { max-width:760px; }
+.decision-guide-list { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--border);border-bottom:1px solid var(--border); }
+.decision-guide-item { padding:24px 22px 24px 0;min-width:0; }
+.decision-guide-item + .decision-guide-item { border-left:1px solid var(--border);padding-left:22px; }
+.decision-guide-item h3 { font-size:15px;font-weight:600;line-height:1.45;margin:0 0 10px; }
+.decision-guide-item p { font-size:14px;line-height:1.7; }
+.decision-guide-note { margin-top:18px;font-size:13px;line-height:1.7; }
+.decision-guide-note strong { color:var(--text);font-weight:600; }
+@media(max-width:700px) {
+ .decision-guide-list { grid-template-columns:1fr; }
+ .decision-guide-item { padding:19px 0; }
+ .decision-guide-item + .decision-guide-item { border-left:0;border-top:1px solid var(--border);padding:19px 0; }
+ .decision-guide-item:last-child { padding-bottom:19px; }
+}
