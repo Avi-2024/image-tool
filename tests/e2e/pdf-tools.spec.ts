@@ -38,7 +38,7 @@ test('invalid PDF gives a recoverable error',async({page},testInfo)=>{
  await page.goto('/pdf-to-image/');
  await page.getByLabel('Choose PDF file').setInputFiles({name:'broken.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\ninvalid content')});
  await expect(page.getByRole('alert')).toBeVisible();
- await expect(page.getByRole('button',{name:'Choose PDF'})).toBeEnabled();
+ await expect(page.getByRole('button',{name:'Choose PDF',exact:true})).toBeEnabled();
  await page.screenshot({path:testInfo.outputPath('pdf-to-image-desktop-error.png'),fullPage:true});
 });
 
@@ -55,9 +55,7 @@ test('mobile PDF flow fits the viewport in empty, selected and ready states',asy
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.getByRole('button',{name:'Toggle color theme'}).click();
  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
- const secondaryColors=await page.getByRole('button',{name:'Download PDF'}).evaluate(element=>{
-  const style=getComputedStyle(element);return {background:style.backgroundColor,color:style.color};
- });
- expect(secondaryColors).toEqual({background:'rgb(17, 28, 45)',color:'rgb(248, 250, 252)'});
+ await expect(page.getByRole('button',{name:'Download PDF'})).toHaveCSS('background-color','rgb(17, 28, 45)');
+ await expect(page.getByRole('button',{name:'Download PDF'})).toHaveCSS('color','rgb(248, 250, 252)');
  await page.screenshot({path:testInfo.outputPath('pdf-mobile-dark.png'),fullPage:true});
 });
