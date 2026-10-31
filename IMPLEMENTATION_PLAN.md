@@ -1,4 +1,26 @@
-# PixelConvert implementation
+# ToolValueLab Images implementation
+
+## October 2026 brand and format visibility
+
+- Rename the customer-facing brand to ToolValueLab Images across navigation, metadata, consent and information pages.
+- Show JPG/JPEG, PNG and WebP as one-tap output choices before upload on the generic converter; keep route-specific targets fixed and retain the same validated browser-local encoders.
+- Verify lint, types, fixture tests, static export, SEO links and available browser UI. Submit in the existing UX pull request; public release follows the repository's deployment rule.
+
+## October 2026 converter UX and live SEO check
+
+1. Check the deployed sitemap, canonical metadata, headers, assets and routes with `check:live`.
+2. Make the homepage's validated source format actionable, add explicit quality presets while preserving manual control, and refine narrow-screen layout.
+3. Run lint, types, fixture tests, static build, SEO export audit and available browser checks; open a reviewable PR. Public deployment stays behind the repository's explicit approval rule.
+
+Result: live checks passed for all 10 routes; lint, typecheck, 39 tests and the release static export/SEO audit passed. Playwright Chromium could not launch because its browser binary is absent and the browser download returned a truncated archive. The release build reported a known Next.js security advisory; upgrading the framework is separate follow-up work.
+
+Follow-up UX: replace the redundant source dropdown with a detected-format label, expose the three output choices as direct buttons, and let a single completed image download directly from the main action. Recheck narrow layouts, invalidation, tests and the static export before updating PR #4.
+
+Follow-up verification: lint, typecheck, 40 unit/component tests and the release static export/SEO audit passed. The current executor has no Chromium binary; its Playwright download failed, and the cloud browser cannot reach the local preview server. Browser visual and real-download checks remain open for the PR preview environment.
+
+Mobile/desktop flow refinement: show the upload surface before any format settings; reveal detected source and direct target buttons after a file is chosen. Revalidate export and preview build. The old NexiloLabs subdomain was removed by the owner; configure a new production origin only after the replacement domain is connected.
+
+The Vercel project now has only its default `image-tool-puce.vercel.app` domain. Its production environment still pointed at the removed NexiloLabs origin; set the temporary origin to the default Vercel domain and disable indexing for future builds. No deployment was triggered. Production release preflight will intentionally block until a verified custom origin is configured and indexing is re-enabled.
 
 1. Push canonical project docs. Initialize compatible Next.js static export and typed configuration.
 2. Implement real validated JPG/PNG/WebP conversion, bounded workers and canvas fallback, cancellation, URL cleanup and worker ZIP downloads.

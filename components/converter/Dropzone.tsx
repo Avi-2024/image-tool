@@ -73,7 +73,7 @@ export default function Dropzone({ from, compact, disabled, onAdd }: DropzonePro
             <span className="upload-title">{drag ? 'Drop them here.' : 'Drop your images here.'}</span>
             <span className="upload-description">Drag and drop your files, or choose images from your device.</span>
             <span className="upload-limits" id="upload-limits">
-              {from === 'any' ? 'JPG, PNG & WebP' : `${from.toUpperCase()} images`}
+              {from === 'any' ? 'JPG/JPEG, PNG & WebP' : `${from.toUpperCase()} images`}
               <span aria-hidden="true">·</span>30 files<span aria-hidden="true">·</span>25 MB each
             </span>
           </span>
