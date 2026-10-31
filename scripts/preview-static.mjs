@@ -6,4 +6,4 @@ const mime={'.html':'text/html','.js':'text/javascript','.css':'text/css','.json
 createServer(async(req,res)=>{
  try{const pathname=decodeURIComponent(new URL(req.url,'http://localhost').pathname);let file=path.resolve(root,'.'+pathname);if(!file.startsWith(root+path.sep)&&file!==root){res.writeHead(403).end();return;}try{if((await stat(file)).isDirectory())file=path.join(file,'index.html');}catch{res.writeHead(404,{'Content-Type':'text/html'});res.end(await readFile(path.join(root,'404.html')));return;}res.setHeader('Content-Type',mime[path.extname(file)]||'application/octet-stream');res.end(await readFile(file));}
  catch{res.writeHead(500).end('Preview file error');}
-}).listen(port,'0.0.0.0',()=>console.log(`Static PixelConvert preview on port ${port}`));
+}).listen(port,'0.0.0.0',()=>console.log(`Static ToolValueLab Images preview on port ${port}`));

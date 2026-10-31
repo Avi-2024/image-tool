@@ -3,6 +3,7 @@ import {it,expect,vi,afterEach} from 'vitest';
 import {render,screen,fireEvent,cleanup} from '@testing-library/react';
 import ConversionSettings from '@/components/converter/ConversionSettings';
 import Dropzone from '@/components/converter/Dropzone';
+import OutputFormatPicker from '@/components/converter/OutputFormatPicker';
 afterEach(cleanup);
 const props={sourceLabel:'PNG detected',to:'jpg' as const,quality:.9,background:'#ffffff',locked:false,disabled:false,webp:true,alpha:true,setTo:vi.fn(),setQuality:vi.fn(),setBackground:vi.fn()};
 it('shows relevant transparency controls and sends actual settings changes',()=>{render(<ConversionSettings {...props}/>);fireEvent.change(screen.getByLabelText('Output quality'),{target:{value:'70'}});expect(props.setQuality).toHaveBeenCalledWith(.7);expect(screen.getByLabelText('JPEG background color')).toBeVisible();});
@@ -11,3 +12,4 @@ it('does not show lossy controls for PNG output',()=>{render(<ConversionSettings
 it('locks route formats and settings while processing',()=>{render(<ConversionSettings {...props} locked disabled/>);for(const button of screen.getAllByRole('button'))expect(button).toBeDisabled();expect(screen.getByLabelText('Output quality')).toBeDisabled();});
 it('shows detected source and allows one-tap output selection',()=>{render(<ConversionSettings {...props} to="any" suggestedTo="webp"/>);expect(screen.getByText('PNG detected')).toBeVisible();fireEvent.click(screen.getByRole('button',{name:/WEBP Suggested/i}));expect(props.setTo).toHaveBeenCalledWith('webp');});
 it('offers a native accessible upload button and file input',()=>{render(<Dropzone from="any" compact={false} disabled={false} onAdd={vi.fn()}/>);expect(screen.getByRole('button',{name:'Choose images'})).toBeVisible();expect(screen.getByLabelText('Image files')).toHaveAttribute('multiple');});
+it('offers JPG/JPEG, PNG and WebP directly before upload',()=>{const onChange=vi.fn();render(<OutputFormatPicker to="any" webp disabled={false} onChange={onChange}/>);fireEvent.click(screen.getByRole('button',{name:'JPG (JPEG)'}));expect(onChange).toHaveBeenCalledWith('jpg');expect(screen.getByRole('button',{name:'PNG'})).toBeVisible();expect(screen.getByRole('button',{name:'WEBP'})).toBeVisible();});

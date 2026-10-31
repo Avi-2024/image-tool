@@ -13,7 +13,7 @@ if (configuredGaId && !/^G-[A-Z0-9]+$/.test(configuredGaId)) {
 }
 
 export const site = {
-  name: 'PixelConvert',
+  name: 'ToolValueLab Images',
   ...settings,
   gaMeasurementId: settings.indexable && process.env.NODE_ENV === 'production' ? configuredGaId : '',
   adsEnabled: process.env.NEXT_PUBLIC_ADS_ENABLED === 'true',

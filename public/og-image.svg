@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <rect x="64" y="64" width="46" height="46" rx="10" fill="#2563eb"/>
+  <rect x="76" y="76" width="8" height="8" rx="1" fill="#fff"/>
+  <rect x="89" y="76" width="8" height="8" rx="1" fill="#fff"/>
+  <rect x="76" y="89" width="8" height="8" rx="1" fill="#fff"/>
+  <rect x="89" y="89" width="8" height="8" rx="1" fill="#fff" opacity=".6"/>
+  <text x="126" y="98" fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="30">ToolValueLab Images</text>
+  <text x="64" y="245" fill="#0f172a" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="72">Convert images.</text>
+  <text x="64" y="329" fill="#2563eb" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="72">Keep them private.</text>
+  <text x="68" y="406" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="28">JPG/JPEG, PNG and WebP. Processed on your device.</text>
+  <path d="M64 492H1136" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="68" y="550" fill="#475569" font-family="Arial, Helvetica, sans-serif" font-size="24">No uploads. No account. Just the file you need.</text>
+</svg>

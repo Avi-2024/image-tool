@@ -1,4 +1,4 @@
-# PixelConvert
+# ToolValueLab Images
 
 A static Next.js image converter. JPG/JPEG, PNG and still WebP files are decoded and encoded in the visitor's browser. There is no image-upload API, database, account requirement or third-party processing service.
 
@@ -109,7 +109,7 @@ The checked-in `vercel.json` selects `npm run build:vercel` and serves the `out/
 
 In **Vercel Project → Settings → Environment Variables**, set these only for **Production** (do not commit a real email address unless intentionally public):
 
-- `NEXT_PUBLIC_SITE_URL=https://pixelconvert.nexilolabs.com` (the verified canonical HTTPS hostname).
+- `NEXT_PUBLIC_SITE_URL=https://images.toolvaluelab.com` (after the custom domain and HTTPS certificate are verified).
 - `NEXT_PUBLIC_ALLOW_INDEXING=true`.
 - `NEXT_PUBLIC_CONTACT_EMAIL` to an actual monitored support mailbox.
 - Optional `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-82YT27NVJZ` for opt-in GA4. Without it, analytics stays disabled. A visitor must actively accept analytics before any Google tag downloads. GA4 enhanced measurement should be configured to track SPA history changes; verify in GA DebugView to avoid duplicate page views.

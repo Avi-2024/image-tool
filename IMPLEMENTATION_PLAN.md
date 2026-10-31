@@ -1,4 +1,10 @@
-# PixelConvert implementation
+# ToolValueLab Images implementation
+
+## October 2026 brand and format visibility
+
+- Rename the customer-facing brand to ToolValueLab Images across navigation, metadata, consent and information pages.
+- Show JPG/JPEG, PNG and WebP as one-tap output choices before upload on the generic converter; keep route-specific targets fixed and retain the same validated browser-local encoders.
+- Verify lint, types, fixture tests, static export, SEO links and available browser UI. Submit in the existing UX pull request; public release follows the repository's deployment rule.
 
 ## October 2026 converter UX and live SEO check
 

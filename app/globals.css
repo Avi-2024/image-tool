@@ -279,6 +279,18 @@ h1,h2,h3 { text-wrap:balance; }
 /* The first screen asks for files; settings appear only after a selection. */
 .converter:not(.has-files) .dropzone { margin-top:24px; }
 @media(max-width:600px) { .converter:not(.has-files) .dropzone { margin-top:16px; } }
+.empty-format-picker { border:0;border-bottom:1px solid var(--border);margin:0;padding:16px 24px 0; }
+.empty-format-picker legend { float:left;width:100%;padding:0;margin-bottom:8px;color:var(--secondary);font-size:13px;font-weight:600; }
+.empty-format-picker .format-options { clear:both;max-width:480px; }
+.empty-format-picker .format-options button { min-height:44px; }
+.empty-format-picker p { margin:8px 0 14px;font-size:12px;line-height:1.5;color:var(--muted); }
+.converter:not(.has-files) .dropzone { margin-top:16px; }
+@media(max-width:600px) {
+ .brand { font-size:16px;letter-spacing:-.5px; }
+ .empty-format-picker { padding:14px 16px 0; }
+ .empty-format-picker .format-options button { font-size:11px; }
+ .converter:not(.has-files) .dropzone { margin-top:16px; }
+}
 @media(max-width:600px) {
  .queue-heading { flex-wrap:wrap;padding:12px 0; }
  .queue-heading>span { flex:1 0 100%; }

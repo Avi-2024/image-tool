@@ -8,6 +8,7 @@ import type { Selection, Settings } from '@/lib/converter/types';
 import Dropzone from './converter/Dropzone';
 import FileItem from './converter/FileItem';
 import ConversionSettings from './converter/ConversionSettings';
+import OutputFormatPicker from './converter/OutputFormatPicker';
 export default function Converter({defaultFrom='any',defaultTo='any'}:{defaultFrom?:Selection;defaultTo?:Selection}){
  const [to,setTo]=useState(defaultTo),[quality,setQuality]=useState(.9),[background,setBackground]=useState('#ffffff'),[webp,setWebp]=useState(true);
  const queue=useConverter(defaultFrom);const {files,busy,adding,zipBusy}=queue;
@@ -23,7 +24,8 @@ export default function Converter({defaultFrom='any',defaultTo='any'}:{defaultFr
  const change=(fn:()=>void)=>{if(disabled)return;queue.invalidate();fn();};
  const downloadReady=()=>{if(!settings)return;const completed=files.map((file,index)=>({file,index})).filter(({file})=>file.result);if(completed.length===1){const {file,index}=completed[0];saveBlob(file.result!.blob,names[index]);}else queue.downloadZip(settings);};
  return <section id="converter" className={`converter ${files.length?'has-files':''}`} aria-label="Image converter">
-  <div className="workspace-heading"><span className="workspace-title">Image converter <span className="workspace-format">JPG / PNG / WEBP</span></span><span className="local-label"><ShieldCheck size={15}/>On your device</span></div>
+  <div className="workspace-heading"><span className="workspace-title">Image converter <span className="workspace-format">JPG / JPEG / PNG / WEBP</span></span><span className="local-label"><ShieldCheck size={15}/>On your device</span></div>
+  {files.length===0&&defaultTo==='any'&&<fieldset className="empty-format-picker" disabled={disabled}><legend>Choose your output format</legend><OutputFormatPicker to={to} webp={webp} disabled={disabled} onChange={format=>change(()=>setTo(format))}/><p>JPG and JPEG are the same format. You can also choose after adding images.</p></fieldset>}
   {files.length===0&&<Dropzone from={defaultFrom} compact={false} disabled={disabled} onAdd={queue.add}/>}
   {files.length>0&&<ConversionSettings sourceLabel={sourceLabel} to={to} suggestedTo={suggestedTo} quality={quality} background={background} locked={defaultTo!=='any'} disabled={disabled} webp={webp} alpha={defaultFrom!=='jpg'&&files.some(f=>f.source!=='jpg')} setTo={v=>change(()=>setTo(v))} setQuality={v=>change(()=>setQuality(v))} setBackground={v=>change(()=>setBackground(v))}/>}
   {files.length>0&&<div className="queue-section"><div className="queue-heading"><span>{files.length} image{files.length===1?'':'s'} <span className="queue-summary">{done>0&&`· ${done} ready`}{failed>0&&` · ${failed} failed`}</span></span><div className="queue-tools"><Dropzone from={defaultFrom} compact disabled={disabled} onAdd={queue.add}/><button type="button" className="text-button" disabled={disabled} onClick={queue.clear}>Clear all</button></div></div><ul className="file-list">{files.map((item,index)=><FileItem key={item.id} item={item} to={to} name={names[index]} disabled={disabled} onRemove={()=>queue.remove(item.id)} onRetry={()=>settings&&queue.start(settings,true)}/>)}</ul></div>}

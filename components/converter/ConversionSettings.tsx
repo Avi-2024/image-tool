@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import type { Format, Selection } from '@/lib/converter/types';
+import OutputFormatPicker from './OutputFormatPicker';
 
 type ConversionSettingsProps = {
   sourceLabel: string;
@@ -27,11 +28,7 @@ export default function ConversionSettings({ sourceLabel, to, suggestedTo, quali
         <ArrowRight className="format-arrow" size={18} aria-hidden="true" />
         <fieldset className={`field-label output-field ${to !== 'any' ? 'is-selected' : ''}`} disabled={disabled || locked}>
           <legend>Convert to</legend>
-          <div className="format-options">
-            {(['jpg', 'png', 'webp'] as const).map(format => <button key={format} type="button"
-              aria-pressed={to === format} disabled={disabled || locked || (format === 'webp' && !webp)}
-              onClick={() => setTo(format)}>{format.toUpperCase()}{suggestedTo === format && to === 'any' && webp && <span className="format-recommended">Suggested</span>}</button>)}
-          </div>
+          <OutputFormatPicker to={to} suggestedTo={suggestedTo} webp={webp} disabled={disabled || locked} onChange={setTo}/>
         </fieldset>
       </div>
       <div className="settings-extra">

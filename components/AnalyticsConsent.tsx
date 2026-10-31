@@ -67,7 +67,7 @@ export default function AnalyticsConsent() {
     </button>
     {(choice === 'pending' || settingsOpen) && <section className="analytics-consent" role="region" aria-label="Analytics consent">
       <div>
-        <strong>Help improve PixelConvert?</strong>
+        <strong>Help improve ToolValueLab Images?</strong>
         <p>Optional Google Analytics measures visits and may set cookies. Your image files are never sent. You can change this choice here anytime.</p>
       </div>
       <div className="analytics-consent-actions">
