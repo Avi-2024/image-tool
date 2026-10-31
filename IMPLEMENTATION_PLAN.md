@@ -8,6 +8,10 @@
 
 Result: live checks passed for all 10 routes; lint, typecheck, 39 tests and the release static export/SEO audit passed. Playwright Chromium could not launch because its browser binary is absent and the browser download returned a truncated archive. The release build reported a known Next.js security advisory; upgrading the framework is separate follow-up work.
 
+Follow-up UX: replace the redundant source dropdown with a detected-format label, expose the three output choices as direct buttons, and let a single completed image download directly from the main action. Recheck narrow layouts, invalidation, tests and the static export before updating PR #4.
+
+Follow-up verification: lint, typecheck, 40 unit/component tests and the release static export/SEO audit passed. The current executor has no Chromium binary; its Playwright download failed, and the cloud browser cannot reach the local preview server. Browser visual and real-download checks remain open for the PR preview environment.
+
 1. Push canonical project docs. Initialize compatible Next.js static export and typed configuration.
 2. Implement real validated JPG/PNG/WebP conversion, bounded workers and canvas fallback, cancellation, URL cleanup and worker ZIP downloads.
 3. Implement converter-focused editorial interface, six static SEO routes and honest privacy/contact pages.

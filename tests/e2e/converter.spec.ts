@@ -14,16 +14,17 @@ test('batch ZIP preserves colliding filenames and isolates corrupt input',async(
  await page.goto('/png-to-jpg/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');await page.locator('#image-input').setInputFiles(['tests/fixtures/alpha.png','tests/fixtures/alpha.png','tests/fixtures/corrupt.png']);await expect(page.locator('.file-row')).toHaveCount(3);await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveCount(2);await expect(page.locator('.file-status.failed')).toHaveCount(1);const event=page.waitForEvent('download');await page.getByRole('button',{name:'Download all · ZIP'}).click();const path=await(await event).path(),contents=unzipSync(readFileSync(path!));expect(Object.keys(contents)).toEqual(['alpha.jpg','alpha-1.jpg']);for(const bytes of Object.values(contents))expect([...bytes.subarray(0,3)]).toEqual([255,216,255]);
 });
 test('mobile overflow, keyboard focus, dark mode and invalidated output',async({page})=>{
- await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to content'})).toBeFocused();await page.getByRole('button',{name:'Toggle color theme'}).click();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');await page.getByRole('combobox',{name:'Convert to'}).selectOption('jpg');await page.locator('#image-input').setInputFiles('tests/fixtures/alpha.png');await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveCount(1);await page.getByRole('combobox',{name:'Convert to'}).selectOption('png');await expect(page.locator('.file-status.completed')).toHaveCount(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to content'})).toBeFocused();await page.getByRole('button',{name:'Toggle color theme'}).click();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');await page.getByRole('button',{name:'JPG',exact:true}).click();await page.locator('#image-input').setInputFiles('tests/fixtures/alpha.png');await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveCount(1);await page.getByRole('button',{name:'PNG',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveCount(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
 test('homepage suggests a target only after validating the uploaded format',async({page})=>{
  await page.goto('/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');
  await page.locator('#image-input').setInputFiles('tests/fixtures/photo.jpg');
- await expect(page.getByRole('button',{name:'Convert to WEBP'})).toBeVisible();
- await page.getByRole('button',{name:'Convert to WEBP'}).click();
- await expect(page.getByRole('combobox',{name:'Convert to'})).toHaveValue('webp');
+ await expect(page.getByRole('button',{name:/WEBP Suggested/})).toBeVisible();
+ await page.getByRole('button',{name:/WEBP Suggested/}).click();
+ await expect(page.getByRole('button',{name:'WEBP',exact:true})).toHaveAttribute('aria-pressed','true');
  await page.getByRole('button',{name:'Small file'}).click();
  await expect(page.getByLabel('Output quality')).toHaveValue('65');
  await page.getByRole('button',{name:'Convert images',exact:true}).click();
  await expect(page.locator('.file-status.completed')).toHaveCount(1);
+ const download=page.waitForEvent('download');await page.getByRole('button',{name:'Download image',exact:true}).click();expect((await download).suggestedFilename()).toMatch(/\.webp$/);
 });
