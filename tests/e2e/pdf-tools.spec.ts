@@ -37,9 +37,12 @@ test('PDF to images renders real PNG pages and ZIP without uploading',async({pag
 test('invalid PDF gives a recoverable error',async({page},testInfo)=>{
  await page.goto('/pdf-to-image/');
  await page.getByLabel('Choose PDF file').setInputFiles({name:'broken.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.7\ninvalid content')});
- await expect(page.getByRole('alert')).toBeVisible();
+ await expect(page.locator('.pdf-workspace .converter-alert')).toContainText(/PDF|pdf|Invalid|invalid/);
+ await expect(page.locator('.pdf-actions [role=status]')).toHaveText('Files stay in your browser.');
  await expect(page.getByRole('button',{name:'Choose PDF',exact:true})).toBeEnabled();
  await page.screenshot({path:testInfo.outputPath('pdf-to-image-desktop-error.png'),fullPage:true});
+ await page.getByLabel('Choose PDF file').setInputFiles('tests/fixtures/two-pages.pdf');
+ await expect(page.getByText('2 pages in this PDF')).toBeVisible();
 });
 
 test('mobile PDF flow fits the viewport in empty, selected and ready states',async({page},testInfo)=>{
