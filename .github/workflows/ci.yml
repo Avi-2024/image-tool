@@ -27,13 +27,35 @@ jobs:
         run: npm run build:vercel
         env:
           VERCEL_ENV: preview
-          NEXT_PUBLIC_SITE_URL: https://pixelconvert.nexilolabs.com
+          NEXT_PUBLIC_SITE_URL: https://images.toolvaluelab.com
           NEXT_PUBLIC_ALLOW_INDEXING: 'true'
           NEXT_PUBLIC_GA_MEASUREMENT_ID: G-82YT27NVJZ
+      - name: Install Chromium for browser conversion checks
+        run: npx playwright install --with-deps chromium
+      - name: Start static preview for browser tests
+        run: |
+          npm run preview -- --port 4173 > /tmp/image-tool-preview.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/image-to-pdf/ > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/image-tool-preview.log
+          exit 1
+      - name: Browser conversion and responsive checks
+        run: npm run test:e2e -- --project=chromium
+        env:
+          TEST_BASE_URL: http://127.0.0.1:4173
+      - name: Browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-evidence
+          path: test-results/
+          if-no-files-found: ignore
       - name: Production release smoke test (canonical sitemap without contact email)
         run: npm run build:vercel
         env:
           VERCEL_ENV: production
-          NEXT_PUBLIC_SITE_URL: https://pixelconvert.nexilolabs.com
+          NEXT_PUBLIC_SITE_URL: https://images.toolvaluelab.com
           NEXT_PUBLIC_ALLOW_INDEXING: 'true'
           NEXT_PUBLIC_GA_MEASUREMENT_ID: G-82YT27NVJZ

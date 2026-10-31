@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/dev.mjs",
-    "build": "next build --webpack",
+    "build": "node scripts/prepare-pdf-worker.mjs && next build --webpack",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -20,11 +20,14 @@
   "dependencies": {
     "fflate": "0.8.3",
     "lucide-react": "^0.468.0",
-    "next": "16.4.0",
+    "next": "^16.4.3",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.4.299",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@napi-rs/canvas": "^1.1.0",
     "@playwright/test": "^1.56.0",
     "@tailwindcss/postcss": "^4.1.0",
     "@testing-library/jest-dom": "^6.9.0",
@@ -33,7 +36,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.0.0",
-    "eslint-config-next": "16.4.0",
+    "eslint-config-next": "^16.4.3",
     "jsdom": "^26.1.0",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.9.0",
