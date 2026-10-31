@@ -242,3 +242,18 @@ h1,h2,h3 { text-wrap:balance; }
  .decision-guide-item + .decision-guide-item { border-left:0;border-top:1px solid var(--border);padding:19px 0; }
  .decision-guide-item:last-child { padding-bottom:19px; }
 }
+
+/* Conversion shortcuts keep the manual quality control and explicit format choice. */
+.quality-control { min-width:260px;max-width:300px; }
+.quality-presets { display:flex;gap:4px;flex-wrap:wrap; }
+.quality-presets button { min-height:36px;padding:6px 9px;border:1px solid var(--border-strong);border-radius:7px;background:var(--surface);color:var(--secondary);font-size:11px;line-height:1.2; }
+.quality-presets button:hover,.quality-presets button[aria-pressed=true] { border-color:var(--accent);color:var(--accent);background:var(--accent-soft); }
+.format-suggestion { margin:0 24px 16px;font-size:13px;line-height:1.6;color:var(--secondary); }
+.format-suggestion .text-button { color:var(--accent);font-weight:600;text-decoration:underline;text-underline-offset:3px; }
+@media(max-width:900px) { .settings-extra { flex-wrap:wrap; } }
+@media(max-width:600px) {
+ .quality-control { width:100%;min-width:0;max-width:none; }
+ .quality-presets { flex-wrap:nowrap; }
+ .quality-presets button { flex:1;padding:6px 4px; }
+ .format-suggestion { margin:0 16px 14px; }
+}

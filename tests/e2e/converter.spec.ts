@@ -16,3 +16,14 @@ test('batch ZIP preserves colliding filenames and isolates corrupt input',async(
 test('mobile overflow, keyboard focus, dark mode and invalidated output',async({page})=>{
  await page.setViewportSize({width:390,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to content'})).toBeFocused();await page.getByRole('button',{name:'Toggle color theme'}).click();await expect(page.locator('html')).toHaveAttribute('data-theme','dark');await page.getByRole('combobox',{name:'Convert to'}).selectOption('jpg');await page.locator('#image-input').setInputFiles('tests/fixtures/alpha.png');await page.getByRole('button',{name:'Convert images',exact:true}).click();await expect(page.locator('.file-status.completed')).toHaveCount(1);await page.getByRole('combobox',{name:'Convert to'}).selectOption('png');await expect(page.locator('.file-status.completed')).toHaveCount(0);expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
+test('homepage suggests a target only after validating the uploaded format',async({page})=>{
+ await page.goto('/');await page.waitForFunction(()=>document.documentElement.dataset.converterHydrated==='true');
+ await page.locator('#image-input').setInputFiles('tests/fixtures/photo.jpg');
+ await expect(page.getByRole('button',{name:'Convert to WEBP'})).toBeVisible();
+ await page.getByRole('button',{name:'Convert to WEBP'}).click();
+ await expect(page.getByRole('combobox',{name:'Convert to'})).toHaveValue('webp');
+ await page.getByRole('button',{name:'Small file'}).click();
+ await expect(page.getByLabel('Output quality')).toHaveValue('65');
+ await page.getByRole('button',{name:'Convert images',exact:true}).click();
+ await expect(page.locator('.file-status.completed')).toHaveCount(1);
+});

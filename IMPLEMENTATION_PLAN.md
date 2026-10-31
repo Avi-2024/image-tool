@@ -1,5 +1,13 @@
 # PixelConvert implementation
 
+## October 2026 converter UX and live SEO check
+
+1. Check the deployed sitemap, canonical metadata, headers, assets and routes with `check:live`.
+2. Make the homepage's validated source format actionable, add explicit quality presets while preserving manual control, and refine narrow-screen layout.
+3. Run lint, types, fixture tests, static build, SEO export audit and available browser checks; open a reviewable PR. Public deployment stays behind the repository's explicit approval rule.
+
+Result: live checks passed for all 10 routes; lint, typecheck, 39 tests and the release static export/SEO audit passed. Playwright Chromium could not launch because its browser binary is absent and the browser download returned a truncated archive. The release build reported a known Next.js security advisory; upgrading the framework is separate follow-up work.
+
 1. Push canonical project docs. Initialize compatible Next.js static export and typed configuration.
 2. Implement real validated JPG/PNG/WebP conversion, bounded workers and canvas fallback, cancellation, URL cleanup and worker ZIP downloads.
 3. Implement converter-focused editorial interface, six static SEO routes and honest privacy/contact pages.

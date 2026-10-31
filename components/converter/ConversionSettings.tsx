@@ -39,13 +39,19 @@ export default function ConversionSettings({ from, to, quality, background, lock
       </div>
       <div className="settings-extra">
         {to === 'jpg' || to === 'webp' ? (
-          <label className="quality-control">
+          <div className="quality-control">
             <span className="control-heading">Quality <output>{qualityPercent}%</output></span>
+            <div className="quality-presets" role="group" aria-label="Quality presets">
+              {([['Small file', .65], ['Balanced', .9], ['Best quality', .95]] as const).map(([label, value]) => (
+                <button key={label} type="button" aria-pressed={quality === value} disabled={disabled}
+                  onClick={() => setQuality(value)}>{label}</button>
+              ))}
+            </div>
             <input aria-label="Output quality" type="range" min="10" max="100" step="1" value={qualityPercent} disabled={disabled}
               style={{ background: `linear-gradient(to right,var(--accent) 0%,var(--accent) ${rangeFill}%,var(--border-strong) ${rangeFill}%,var(--border-strong) 100%)` }}
               onChange={event => setQuality(Number(event.target.value) / 100)} />
             <span className="control-note">Higher quality, usually larger files.</span>
-          </label>
+          </div>
         ) : (
           <div className="quality-note">{to === 'png' ? 'Lossless PNG. Keeps transparency.' : 'Choose the format you want to download.'}</div>
         )}
