@@ -43,5 +43,10 @@ test('mobile PDF flow fits the viewport in empty, selected and ready states',asy
  await page.screenshot({path:testInfo.outputPath('pdf-mobile-ready.png'),fullPage:true});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.getByRole('button',{name:'Toggle color theme'}).click();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+ const secondaryColors=await page.getByRole('button',{name:'Download PDF'}).evaluate(element=>{
+  const style=getComputedStyle(element);return {background:style.backgroundColor,color:style.color};
+ });
+ expect(secondaryColors).toEqual({background:'rgb(17, 28, 45)',color:'rgb(248, 250, 252)'});
  await page.screenshot({path:testInfo.outputPath('pdf-mobile-dark.png'),fullPage:true});
 });
