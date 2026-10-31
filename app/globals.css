@@ -275,3 +275,13 @@ h1,h2,h3 { text-wrap:balance; }
  .format-controls .output-field { display:block;width:100%;margin-top:12px; }
  .format-options button { min-height:48px; }
 }
+
+/* The first screen asks for files; settings appear only after a selection. */
+.converter:not(.has-files) .dropzone { margin-top:24px; }
+@media(max-width:600px) { .converter:not(.has-files) .dropzone { margin-top:16px; } }
+@media(max-width:600px) {
+ .queue-heading { flex-wrap:wrap;padding:12px 0; }
+ .queue-heading>span { flex:1 0 100%; }
+ .queue-heading .queue-summary { display:inline;color:var(--muted); }
+ .queue-tools { width:100%;justify-content:space-between; }
+}

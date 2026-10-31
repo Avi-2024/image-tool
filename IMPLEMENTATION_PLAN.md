@@ -12,6 +12,10 @@ Follow-up UX: replace the redundant source dropdown with a detected-format label
 
 Follow-up verification: lint, typecheck, 40 unit/component tests and the release static export/SEO audit passed. The current executor has no Chromium binary; its Playwright download failed, and the cloud browser cannot reach the local preview server. Browser visual and real-download checks remain open for the PR preview environment.
 
+Mobile/desktop flow refinement: show the upload surface before any format settings; reveal detected source and direct target buttons after a file is chosen. Revalidate export and preview build. The old NexiloLabs subdomain was removed by the owner; configure a new production origin only after the replacement domain is connected.
+
+The Vercel project now has only its default `image-tool-puce.vercel.app` domain. Its production environment still pointed at the removed NexiloLabs origin; set the temporary origin to the default Vercel domain and disable indexing for future builds. No deployment was triggered. Production release preflight will intentionally block until a verified custom origin is configured and indexing is re-enabled.
+
 1. Push canonical project docs. Initialize compatible Next.js static export and typed configuration.
 2. Implement real validated JPG/PNG/WebP conversion, bounded workers and canvas fallback, cancellation, URL cleanup and worker ZIP downloads.
 3. Implement converter-focused editorial interface, six static SEO routes and honest privacy/contact pages.
