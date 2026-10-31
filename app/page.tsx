@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowUpRight, ShieldCheck, SlidersHorizontal, Layers } from 'lucide-react';
 import Converter from '@/components/Converter';
 import RelatedConverters from '@/components/RelatedConverters';
+import PdfToolLinks from '@/components/PdfToolLinks';
 import FAQSection from '@/components/FAQSection';
 import AdSlot from '@/components/AdSlot';
 import JsonLd from '@/components/JsonLd';
@@ -15,6 +16,7 @@ export default function Home(){return <div className="shell main-shell">
  <Converter/><AdSlot id="home-below-tool" slotPosition="below-tool"/>
  <div className="benefit-strip"><div><ShieldCheck size={18}/><span>Locally processed</span></div><div><Layers size={18}/><span>Up to 30 images</span></div><div><SlidersHorizontal size={18}/><span>Quality on your terms</span></div></div>
  <RelatedConverters items={getLiveConverters()}/>
+ <PdfToolLinks/>
  <section className="how-section section"><div className="section-heading"><span className="eyebrow">LESS FRICTION</span><h2>From your device.<br/>Back to your device.</h2><p>No detours through an upload server.</p><Link href="/privacy/" className="inline-link">How local processing works <ArrowUpRight size={15}/></Link></div><ol className="steps"><li><span>01</span><div><h3>Choose your images</h3><p>Drop a batch or browse your files. We check the actual image format before adding a preview.</p></div></li><li><span>02</span><div><h3>Make it your format</h3><p>Pick JPG, PNG or WebP. Adjust quality and a background where the format needs them.</p></div></li><li><span>03</span><div><h3>Take your files with you</h3><p>See the real output size, then download an image or a ZIP. Clear the queue when you’re done.</p></div></li></ol></section>
  <FAQSection faqs={faqs}/>
  <JsonLd value={{'@context':'https://schema.org','@type':'WebSite',name:site.name,url:site.url}}/>

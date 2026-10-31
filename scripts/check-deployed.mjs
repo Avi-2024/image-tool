@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { JSDOM } from 'jsdom';
 
-const expectedPaths = ['/', '/png-to-jpg/', '/jpg-to-png/', '/webp-to-jpg/', '/webp-to-png/', '/png-to-webp/', '/jpg-to-webp/', '/about/', '/contact/', '/privacy/'];
+const expectedPaths = ['/', '/png-to-jpg/', '/jpg-to-png/', '/webp-to-jpg/', '/webp-to-png/', '/png-to-webp/', '/jpg-to-webp/', '/image-to-pdf/', '/pdf-to-image/', '/about/', '/contact/', '/privacy/'];
 const input = process.argv[2];
 if (!input) {
   console.error('Usage: npm run check:live -- https://your-production-host');
@@ -49,9 +49,10 @@ for (const path of expectedPaths) {
   }
   assert.ok(!body.includes('http://localhost:3000'), `${path}: localhost leaked into output`);
 }
-for (const asset of ['/og-image.png', '/fonts/geist-latin.woff2']) {
+for (const asset of ['/og-image.png', '/pdf.worker.min.mjs', '/fonts/geist-latin.woff2']) {
   const {response} = await load(asset);
   assert.equal(response.status, 200, `Missing public asset: ${asset}`);
+  if(asset.endsWith('.mjs'))assert.ok(/javascript/i.test(response.headers.get('content-type')||''), 'PDF worker must be served as JavaScript');
 }
 const home = new JSDOM((await load('/')).body).window.document;
 const js = [...home.querySelectorAll('script[src]')].map(s => s.getAttribute('src')).find(src => src.startsWith('/_next/static/'));
@@ -59,4 +60,4 @@ assert.ok(js, 'Could not find a fingerprinted JavaScript asset');
 assert.equal((await load(js)).response.status, 200, 'JavaScript asset not reachable');
 const missing = await load('/__release-check-this-page-does-not-exist-927/');
 assert.equal(missing.response.status, 404, 'Unknown paths must return genuine 404s');
-console.log(`Live release checks passed for ${origin}: 10 indexable pages, canonical metadata, sitemap, headers, assets and 404.`);
+console.log(`Live release checks passed for ${origin}: ${expectedPaths.length} indexable pages, canonical metadata, sitemap, headers, assets and 404.`);

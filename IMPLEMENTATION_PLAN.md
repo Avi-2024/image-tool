@@ -1,5 +1,13 @@
 # ToolValueLab Images implementation
 
+## Image/PDF tools and SEO routes
+
+- Add separate browser-local Image to PDF and PDF to image workspaces, with bounded files, pages, output memory and real downloadable PDF/PNG/JPG/ZIP files.
+- Add two unique routes, visible navigation, FAQ and WebApplication metadata; include both in sitemap and live/export audits.
+- Verify with real fixtures, lint, types, tests and release export. Browser QA should check desktop/mobile and actual file downloads; if Chromium cannot be installed, report the gap and keep the change reviewable.
+
+Implementation: two tool routes and a locally served PDF.js worker added, with page ordering/ranges and bounded ZIP output. Lint, types, 45 tests and production-mode static/SEO audit passed: 12 canonical pages and 197 internal links. A real two-page PDF fixture renders to PNG in the Node canvas test; browser E2E remains unverified because Playwright Chromium download returned a truncated archive. The local static server returns both routes and the JavaScript worker with HTTP 200.
+
 ## October 2026 brand and format visibility
 
 - Rename the customer-facing brand to ToolValueLab Images across navigation, metadata, consent and information pages.

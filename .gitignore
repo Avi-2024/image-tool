@@ -7,4 +7,5 @@ test-results/
 *.tsbuildinfo
 .openai/
 public/__qa/
+public/pdf.worker.min.mjs
 tests/fixtures/large.jpg

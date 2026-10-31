@@ -47,7 +47,7 @@ Open `/__qa/index.html?w=1440&h=900&theme=light` and click **Run actual browser 
 
 ## Architecture
 
-- `config/converters.ts`: canonical route and unique content configuration. Six live slugs drive static generation, directory navigation and sitemap. Alias URLs are not duplicate indexed pages. Optional host-level 301s can map `jpeg` aliases to the canonical `jpg` routes.
+- `config/converters.ts`: canonical route and unique content configuration. Six image conversion slugs drive static generation, directory navigation and sitemap. Alias URLs are not duplicate indexed pages. Optional host-level 301s can map `jpeg` aliases to the canonical `jpg` routes.
 - `components/Converter.tsx`: settings and state-aware actions. Presentation is separated into dropzone, settings and file-row components.
 - `lib/converter/hooks.ts`: bounded batch scheduling (two workers on desktop, one at narrow viewport widths), cancellation, retries, stale-output invalidation and resource cleanup.
 - `lib/converter/worker.ts` / `engine.ts`: OffscreenCanvas image encoding where available. A worker initialization failure or missing OffscreenCanvas uses an HTMLCanvas fallback. Worker instances are short-lived and terminated after each job, with at most two active jobs; this is bounded scheduling rather than a persistent worker pool.
@@ -59,7 +59,7 @@ Open `/__qa/index.html?w=1440&h=900&theme=light` and click **Run actual browser 
 
 30 files; 25 MiB per input; 40 million decoded pixels; maximum dimension 16,384 px; 150 MiB output limit for ZIP preparation. JPEG, PNG and standard WebP headers are checked before decoding. Browser resources can impose lower limits.
 
-The filename extension, MIME and file signature must match. Output bytes are verified before a download is offered. Animated WebP and APNG are rejected. No support is claimed for GIF, SVG, HEIC, AVIF, PDF or animation. JPEG flattens transparent pixels onto a chosen solid color. PNG preserves decoded pixels; converting a lossy source does not recover lost detail. WebP uses the browser encoder's quality control and is not advertised as guaranteed lossless. Exact encoded sizes vary by browser.
+The filename extension, MIME and file signature must match. Output bytes are verified before a download is offered. Animated WebP and APNG are rejected. The image-to-image converter does not accept PDF input; the separate PDF tools handle image-to-PDF and PDF-to-image. GIF, SVG, HEIC, AVIF and animation are not supported. JPEG flattens transparent pixels onto a chosen solid color. PNG preserves decoded pixels; converting a lossy source does not recover lost detail. WebP uses the browser encoder's quality control and is not advertised as guaranteed lossless. Exact encoded sizes vary by browser.
 
 Cancel terminates active workers; a canvas fallback encoding cannot be interrupted mid-operation, but its late result is discarded. Changing settings invalidates old outputs. Downloads use temporary Blob URLs released after 30 seconds. Preview URLs are released on removal/clear/unmount. Workers and pending ZIP timers are cleaned up on unmount. Decode and preview validation use a sequential pipeline; large originals can still consume substantial browser memory, so use smaller batches on low-memory devices.
 
@@ -91,7 +91,7 @@ Use `npm run build:release` for a **public** release. It stops if the HTTPS orig
 6. Inspect the deployed homepage and all six tool URLs. They should return 200, have matching canonical URLs and no `noindex`/`X-Robots-Tag: noindex`. Verify `/robots.txt`, `/sitemap.xml`, static JS/worker/font assets, and a deliberately missing URL returning 404.
 7. Verify the domain in Google Search Console, submit `/sitemap.xml`, run live URL inspection and request indexing of the homepage and six conversion pages. Monitor the Page indexing report. Search Console access and a deployed URL are required; local build verification cannot submit or prove indexing.
 
-`npm run check:seo` examines the actual exported HTML: all ten pages, unique titles/descriptions, canonicals, social previews, visible FAQ schemas, internal links/fragments, robots, the 404 page, and absence of test assets. `-- --release` also requires indexable pages and the canonical sitemap reference. It checks the exported files, not the host's HTTP headers, redirects or availability.
+`npm run check:seo` examines the actual exported HTML: all twelve pages, unique titles/descriptions, canonicals, social previews, visible FAQ schemas, internal links/fragments, robots, the 404 page, and absence of test assets. `-- --release` also requires indexable pages and the canonical sitemap reference. It checks the exported files, not the host's HTTP headers, redirects or availability.
 
 ### Host configuration and performance
 
@@ -122,4 +122,8 @@ The repository's GitHub Actions workflow performs lint, typecheck, tests, previe
 npm run check:live -- https://image-tool-puce.vercel.app
 ```
 
-This fails until the live site has real indexable canonicals, a corrected ten-entry sitemap, appropriate headers, public static assets and genuine 404 behavior. It checks deployed HTTP output, not Search Console indexing, GA event receipt or page speed. Once it passes, submit the sitemap in Google Search Console and check the **live** URL Inspection report.
+This fails until the live site has real indexable canonicals, a corrected twelve-entry sitemap, appropriate headers, public static assets and genuine 404 behavior. It checks deployed HTTP output, not Search Console indexing, GA event receipt or page speed. Once it passes, submit the sitemap in Google Search Console and check the **live** URL Inspection report.
+
+## Image and PDF tools
+
+`/image-to-pdf/` combines up to 20 validated JPG, PNG or still WebP images (75 MB combined) into A4 PDF pages in the selected order. `/pdf-to-image/` renders a selected range of up to 50 pages from an unencrypted PDF (25 MB maximum) to JPG or PNG, with individual or ZIP downloads. The PDF.js worker is bundled locally at `/pdf.worker.min.mjs`; files are processed in the browser without an upload endpoint. Output is limited to 100 MB. Browser E2E checks cover PDF signatures, pages and output image bytes.

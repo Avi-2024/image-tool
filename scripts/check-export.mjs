@@ -9,8 +9,8 @@ const read = file => readFile(path.join(root, file), 'utf8');
 const exists = file => access(file).then(() => true, () => false);
 const sitemap = new JSDOM(await read('sitemap.xml'), {contentType: 'text/xml'}).window.document;
 const urls = [...sitemap.querySelectorAll('loc')].map(node => new URL(node.textContent));
-const paths = ['/', '/png-to-jpg/', '/jpg-to-png/', '/webp-to-jpg/', '/webp-to-png/', '/png-to-webp/', '/jpg-to-webp/', '/about/', '/contact/', '/privacy/'];
-assert.deepEqual(urls.map(url => url.pathname).sort(), [...paths].sort(), 'Sitemap must contain exactly the ten public canonical pages');
+const paths = ['/', '/png-to-jpg/', '/jpg-to-png/', '/webp-to-jpg/', '/webp-to-png/', '/png-to-webp/', '/jpg-to-webp/', '/image-to-pdf/', '/pdf-to-image/', '/about/', '/contact/', '/privacy/'];
+assert.deepEqual(urls.map(url => url.pathname).sort(), [...paths].sort(), 'Sitemap must contain exactly the twelve public canonical pages');
 const origin = urls[0].origin;
 if (release) {
   const configuredOrigin = process.env.NEXT_PUBLIC_SITE_URL?.trim();
